@@ -16,6 +16,11 @@ For help installing MongoDB:
 
 ### Run the App ###
 
+You will need to install Bower and Grunt globally with the following:
+
+          npm install -g bower
+          npm install -g grunt-cli
+
 Run the following commands:
 
           npm install
