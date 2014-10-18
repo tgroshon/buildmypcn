@@ -11,7 +11,7 @@
 		"start": "./node_modules/grunt-cli/bin/grunt",
 		"test": "./node_modules/grunt-cli/bin/grunt test",
 		"build": "./node_modules/grunt-cli/bin/grunt build",
-		"postinstall": "./node_modules/bower/bin/bower install --config.interactive=false"
+		"postinstall": "./node_modules/bower/bin/bower install --config.interactive=false && npm run build"
 	},
 	"dependencies": {
 		"express": "~4.9.5",
