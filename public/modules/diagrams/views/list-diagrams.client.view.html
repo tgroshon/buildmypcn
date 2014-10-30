@@ -1,0 +1,19 @@
+<section data-ng-controller="DiagramsController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Diagrams</h1>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="diagram in diagrams" data-ng-href="#!/diagrams/{{diagram._id}}" class="list-group-item">
+			<small class="list-group-item-text">
+				Posted on
+				<span data-ng-bind="diagram.created | date:'medium'"></span>
+				by
+				<span data-ng-bind="diagram.user.displayName"></span>
+			</small>
+			<h4 class="list-group-item-heading" data-ng-bind="diagram.name"></h4>
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!diagrams.$resolved || diagrams.length">
+    	No Diagrams yet, why don't you <a href="/#!/diagrams/create">create one</a>?
+    </div>
+</section>
