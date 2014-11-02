@@ -1,6 +1,6 @@
 'use strict';
 
-// Configuring the Articles module
+// Configuring the Diagrams module
 angular.module('diagrams').run(['Menus',
 	function(Menus) {
 		// Set top bar menu items
