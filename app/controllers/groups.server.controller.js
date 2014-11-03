@@ -13,17 +13,31 @@ var mongoose = require('mongoose'),
  */
 exports.create = function(req, res) {
 	var group = new Group(req.body);
-	group.user = req.user;
-
-	group.save(function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
+	var user = mongoose.model('User');
+	var numMembers = group.members.length;
+	//user.find({}).or([{'email':{$in: group.members}},{'username':{$in:group.members}}]).exec(function(err, members){
+	//	if(err) return err;
+	//	for(var x = 0; x < members.length; x++)
+	//	{
+	//		group.members[x] = members[x];
+	//	}
+	//	if(members.length == numMembers)
+	//	{
+			group.user = req.user;
+	
+			group.save(function(err) {
+				if (err) {
+					return res.status(400).send({
+						message: errorHandler.getErrorMessage(err)
+					});
+				} else {
+					res.jsonp(group);
+				}
 			});
-		} else {
-			res.jsonp(group);
-		}
-	});
+	//	}
+	//	else
+
+	//});
 };
 
 /**

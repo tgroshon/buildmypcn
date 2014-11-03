@@ -18,4 +18,8 @@
 			<span data-ng-bind="group.user.displayName"></span>
 		</em>
 	</small>
+	<h2>Members</h2>
+	<ul ng-repeat="user in group.members">
+		<li>{{user.username}}</li>
+	</ul>
 </section>

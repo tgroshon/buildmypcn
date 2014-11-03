@@ -11,6 +11,10 @@
 				<span data-ng-bind="group.user.displayName"></span>
 			</small>
 			<h4 class="list-group-item-heading" data-ng-bind="group.name"></h4>
+			<div class="list-group-item-text">
+				Members: 
+				<span ng-repeat="user in group.members">{{user.username}} </span>
+			</div>
         </a>
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!groups.$resolved || groups.length">

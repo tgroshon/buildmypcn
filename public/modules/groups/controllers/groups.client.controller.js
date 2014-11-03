@@ -9,9 +9,9 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
 		$scope.create = function() {
 			// Create new Group object
 			var group = new Groups ({
-				name: this.name
+				name: this.name, 
+				members: this.members
 			});
-
 			// Redirect after save
 			group.$save(function(response) {
 				$location.path('groups/' + response._id);
@@ -41,8 +41,31 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
 
 		// Update existing Group
 		$scope.update = function() {
-			var group = $scope.group ;
-
+			var group = $scope.group;
+			var addMembers = $scope.addMembers;
+			var removeMembers = $scope.removeMembers;
+			var members = [];
+			for(var x = 0; x < group.members.length; x++)
+			{
+				members[x] = group.members[x].username;
+			}
+			members.push(addMembers);
+			
+			//this doesn't work yet
+			//won't find by email...
+			for(var x = 0; x < removeMembers.length; x++)
+			{
+				var index = members.indexOf(removeMembers[x]);
+				console.log(index);
+				if(index > -1)
+				{
+					members.splice(index,1);
+				}
+			}
+			group.members = members;
+			
+			console.log("showing all member usernames "+ members);
+			
 			group.$update(function() {
 				$location.path('groups/' + group._id);
 			}, function(errorResponse) {
