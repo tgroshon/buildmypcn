@@ -12,14 +12,15 @@
 	</div>
 	<small>
 		<em class="text-muted">
-			Posted on
+			Created on
 			<span data-ng-bind="group.created | date:'mediumDate'"></span>
 			by
 			<span data-ng-bind="group.user.displayName"></span>
 		</em>
 	</small>
 	<h2>Members</h2>
-	<ul ng-repeat="user in group.members">
-		<li>{{user.username}}</li>
+	<ul>
+    <li>{{group.user.displayName}}</li>
+		<li data-ng-repeat="user in group.members">{{user.displayName}}</li>
 	</ul>
 </section>

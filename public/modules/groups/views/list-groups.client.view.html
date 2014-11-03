@@ -3,9 +3,9 @@
         <h1>Groups</h1>
     </div>
     <div class="list-group">
-        <a data-ng-repeat="group in groups" data-ng-href="#!/groups/{{group._id}}" class="list-group-item">
+      <a data-ng-repeat="group in groups" data-ng-href="#!/groups/{{group._id}}" class="list-group-item">
 			<small class="list-group-item-text">
-				Posted on
+			  Created on	
 				<span data-ng-bind="group.created | date:'medium'"></span>
 				by
 				<span data-ng-bind="group.user.displayName"></span>
@@ -13,7 +13,10 @@
 			<h4 class="list-group-item-heading" data-ng-bind="group.name"></h4>
 			<div class="list-group-item-text">
 				Members: 
-				<span ng-repeat="user in group.members">{{user.username}} </span>
+        <ul>
+          <li>{{group.user.displayName}}</li>
+          <li ng-repeat="user in group.members">{{user.displayName}}</li>
+        </ul>
 			</div>
         </a>
     </div>
