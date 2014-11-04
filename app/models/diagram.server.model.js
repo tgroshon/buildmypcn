@@ -3,8 +3,8 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-	Schema = mongoose.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 /**
  * Diagram Schema
@@ -20,10 +20,23 @@ var DiagramSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	user: {
+	group: {
 		type: Schema.ObjectId,
-		ref: 'User'
+		ref: 'Group'
 	}
 });
+
+DiagramSchema.statics.findByGroups = function (groups, cb) {
+  if (!groups) return cb();
+  var groupIds = groups.map(function (group) { return group._id; });
+
+  this.find({'group': { $in: groupIds }})
+    .sort('-created')
+    .populate('group')
+    .exec(function(err, diagrams) {
+      if (err) return cb(err);
+      cb(null, diagrams);
+    });
+};
 
 mongoose.model('Diagram', DiagramSchema);

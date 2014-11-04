@@ -40,7 +40,7 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
     // Remove a Member from the group
     $scope.removeMember = function (member) {
       $scope.group.members = $scope.group.members.filter(function (currentMember) {
-        return currentMember.username != member.username;
+        return currentMember.username !== member.username;
       });
     };
 

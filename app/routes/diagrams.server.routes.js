@@ -6,11 +6,11 @@ module.exports = function(app) {
 
 	// Diagrams Routes
 	app.route('/diagrams')
-		.get(diagrams.list)
+		.get(users.requiresLogin, diagrams.list)
 		.post(users.requiresLogin, diagrams.create);
 
 	app.route('/diagrams/:diagramId')
-		.get(diagrams.read)
+		.get(users.requiresLogin, diagrams.hasAuthorization, diagrams.read)
 		.put(users.requiresLogin, diagrams.hasAuthorization, diagrams.update)
 		.delete(users.requiresLogin, diagrams.hasAuthorization, diagrams.delete);
 

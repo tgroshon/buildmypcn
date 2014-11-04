@@ -68,32 +68,32 @@ exports.delete = function(req, res) {
 };
 
 /**
- * List of Groups
+ * List of Groups you own or are a member
  */
-exports.list = function(req, res) { Group.find().sort('-created').populate('user', 'displayName').exec(function(err, groups) {
+exports.list = function(req, res) {
+  Group.findByUser(req.user, function(err, groups) {
 		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(groups);
+			return res.status(400).send({message: errorHandler.getErrorMessage(err)});
 		}
+    res.jsonp(groups);
 	});
 };
 
 /**
  * Group middleware
  */
-exports.groupByID = function(req, res, next, id) { Group.findById(id).populate('user', 'displayName').exec(function(err, group) {
+exports.groupByID = function(req, res, next, id) {
+  Group.findById(id).populate('user', 'displayName').exec(function(err, group) {
 		if (err) return next(err);
-		if (! group) return next(new Error('Failed to load Group ' + id));
-		req.group = group ;
+		if (!group) return next(new Error('Failed to load Group ' + id));
+		req.group = group;
 		next();
 	});
 };
 
 /**
  * Group authorization middleware
+ * Only the creator
  */
 exports.hasAuthorization = function(req, res, next) {
 	if (req.group.user.id !== req.user.id) {

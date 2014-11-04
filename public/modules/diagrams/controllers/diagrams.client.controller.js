@@ -1,15 +1,16 @@
 'use strict';
 
 // Diagrams controller
-angular.module('diagrams').controller('DiagramsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Diagrams',
-	function($scope, $stateParams, $location, Authentication, Diagrams ) {
+angular.module('diagrams').controller('DiagramsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Diagrams', 'Groups',
+	function($scope, $stateParams, $location, Authentication, Diagrams, Groups) {
 		$scope.authentication = Authentication;
 
 		// Create new Diagram
 		$scope.create = function() {
 			// Create new Diagram object
 			var diagram = new Diagrams ({
-				name: this.name
+				name: this.name,
+        group: this.selectedGroup._id
 			});
 
 			// Redirect after save
@@ -41,7 +42,7 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
 
 		// Update existing Diagram
 		$scope.update = function() {
-			var diagram = $scope.diagram ;
+			var diagram = $scope.diagram;
 
 			diagram.$update(function() {
 				$location.path('diagrams/' + diagram._id);
@@ -50,13 +51,22 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
 			});
 		};
 
+    $scope.setEditedGroup = function() {
+      $scope.setEditedGroup = $scope.diagram.group;
+    };
+
 		// Find a list of Diagrams
 		$scope.find = function() {
 			$scope.diagrams = Diagrams.query();
 		};
 
+		$scope.getAllGroups = function() {
+			$scope.groups = Groups.query();
+		};
+
 		// Find existing Diagram
 		$scope.findOne = function() {
+      $scope.getAllGroups();
 			$scope.diagram = Diagrams.get({ 
 				diagramId: $stateParams.diagramId
 			});

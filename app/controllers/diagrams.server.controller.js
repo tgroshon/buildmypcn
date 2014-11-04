@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors'),
 	Diagram = mongoose.model('Diagram'),
+	Group = mongoose.model('Group'),
 	_ = require('lodash');
 
 /**
@@ -72,24 +73,28 @@ exports.delete = function(req, res) {
 /**
  * List of Diagrams
  */
-exports.list = function(req, res) { Diagram.find().sort('-created').populate('user', 'displayName').exec(function(err, diagrams) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(diagrams);
-		}
-	});
+exports.list = function(req, res) {
+  Group.findByUser(req.user, function (err, groups) {
+    if (err) {
+      return res.status(400).send({message: errorHandler.getErrorMessage(err)});
+    }
+    Diagram.findByGroups(groups, function (err, diagrams) {
+      if (err) {
+        return res.status(400).send({message: errorHandler.getErrorMessage(err)});
+      }
+      res.jsonp(diagrams);
+    });
+  });
 };
 
 /**
  * Diagram middleware
  */
-exports.diagramByID = function(req, res, next, id) { Diagram.findById(id).populate('user', 'displayName').exec(function(err, diagram) {
+exports.diagramByID = function(req, res, next, id) {
+  Diagram.findById(id).populate('group').exec(function(err, diagram) {
 		if (err) return next(err);
-		if (! diagram) return next(new Error('Failed to load Diagram ' + id));
-		req.diagram = diagram ;
+		if (!diagram) return next(new Error('Failed to load Diagram ' + id));
+		req.diagram = diagram;
 		next();
 	});
 };
@@ -98,8 +103,16 @@ exports.diagramByID = function(req, res, next, id) { Diagram.findById(id).popula
  * Diagram authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.diagram.user.id !== req.user.id) {
-		return res.status(403).send('User is not authorized');
-	}
-	next();
+  if (!req.diagram.group)
+    return res.status(500).send('Misconfigured Diagram');
+
+  var userIsGroupOwner = req.user._id.equals(req.diagram.group.user);
+  var userIsGroupMember = req.diagram.group.members.some(function (member) {
+    return req.user._id.equals(member._id);
+  });
+  
+  if (userIsGroupOwner || userIsGroupMember)
+    return next();
+  else
+    return res.status(403).send('User Not Authorized via Group for this diagram');
 };
