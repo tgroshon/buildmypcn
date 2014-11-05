@@ -43,7 +43,7 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
 		// Update existing Diagram
 		$scope.update = function() {
 			var diagram = $scope.diagram;
-
+            diagram.group = $scope.selectedGroup;
 			diagram.$update(function() {
 				$location.path('diagrams/' + diagram._id);
 			}, function(errorResponse) {
@@ -67,9 +67,21 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
 		// Find existing Diagram
 		$scope.findOne = function() {
       $scope.getAllGroups();
-			$scope.diagram = Diagrams.get({ 
+			var promise = Diagrams.get({
 				diagramId: $stateParams.diagramId
 			});
+
+            promise.$promise.then(function(data) {
+               $scope.diagram = data;
+               $scope.selectedGroup = null;
+
+               for (var i = 0; i < $scope.groups.length; i++) {
+                   if ($scope.groups[i].name === $scope.diagram.group.name) {
+                       $scope.selectedGroup = $scope.groups[i];
+                       break;
+                   }
+               }
+            });
 		};
 	}
 ]);
