@@ -1,21 +1,21 @@
 'use strict';
 
 //Diagrams service used to communicate Diagrams REST endpoints
-angular.module('diagrams').directive("grapher", ['$document',
+angular.module('diagrams').directive('grapher', ['$document',
   function($document) {
     /**
      * Do other work in _private functions
      */
     function _didWork(val) {
       console.log(val);
-    };
+    }
 
     /**
      * Controller to do Scope setup for template
      */
     function controller() {
 
-    };
+    }
 
     /**
      * @scope: Angular scope object.
@@ -25,10 +25,10 @@ angular.module('diagrams').directive("grapher", ['$document',
     function link(scope, element, attrs) {
       _didWork(attrs.pcn);
       scope.pcnString = attrs.pcn;
-      element.bind("mouseenter", function () {
-        alert('Entered with this value: ' + attrs.enter); 
+      element.bind('mouseenter', function () {
+        alert('Entered with this value: ' + attrs.enter);
       });
-    };
+    }
 
     /**
      * Directive Setup Options
