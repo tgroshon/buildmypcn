@@ -10,11 +10,20 @@ var Schema = mongoose.Schema;
  * Diagram Schema
  */
 var DiagramSchema = new Schema({
-	name: {
+	title: {
 		type: String,
 		default: '',
-		required: 'Please fill Diagram name',
+		required: 'Please give the diagram a title',
 		trim: true
+	},
+	description: {
+		type: String,
+		default: '',
+		required: 'Please give the diagram a description',
+		trim: true
+	},
+	domains: {
+		type: Array
 	},
 	created: {
 		type: Date,
@@ -23,6 +32,9 @@ var DiagramSchema = new Schema({
 	group: {
 		type: Schema.ObjectId,
 		ref: 'Group'
+	},
+	steps: {
+		type: Array
 	}
 });
 

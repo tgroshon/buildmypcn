@@ -1,16 +1,45 @@
 'use strict';
 
 // Diagrams controller
-angular.module('diagrams').controller('DiagramsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Diagrams', 'Groups',
-	function($scope, $stateParams, $location, Authentication, Diagrams, Groups) {
+angular.module('diagrams').controller('DiagramsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Diagrams', 'Groups', 'PCN',
+	function($scope, $stateParams, $location, Authentication, Diagrams, Groups, PCN) {
 		$scope.authentication = Authentication;
+		Groups.query().$promise.then(function(groups) {
+			if (groups.length > 0) {
+				$scope.selectedGroup = groups[0];
+			}
+			$scope.groups = groups;
+		});
+		$scope.stepTypes = [
+			{'name': 'process', 'displayedName': 'Process'},
+			{'name': 'decision', 'displayedName': 'Decision'},
+			{'name': 'wait', 'displayedName': 'Wait'},
+			{'name': 'divergent_process', 'displayedName': 'Divergent Process'}
+		];
+		$scope.valueSpecificOptions = [-3, -2, -1, 0, 1, 2, 3];
+		$scope.valueGenericOptions = [-3, -2, -1, 0, 1, 2, 3];
+
+		// Create a new, blank PCN object
+		$scope.pcn = PCN.initPCN('', '', '');
+		$scope.pcn.domains = [PCN.initDomain('', 'Provider'), PCN.initDomain('', 'Customer')];
+		$scope.pcn.steps = [PCN.initStep($scope.pcn.domains[0], '', '', null)];
+
+		$scope.addDomain = function() {
+			$scope.pcn.domains.push(PCN.initDomain('', ''));
+		}
+		$scope.addStep = function() {
+			$scope.pcn.steps.push(PCN.initStep($scope.pcn.domains[0], '', '', null));
+		}
 
 		// Create new Diagram
 		$scope.create = function() {
 			// Create new Diagram object
 			var diagram = new Diagrams ({
-				name: this.name,
-        group: this.selectedGroup._id
+				title: this.pcn.metadata.title,
+        		group: this.selectedGroup._id,
+				description: this.pcn.metadata.description,
+				domains: this.pcn.domains,
+				steps: this.pcn.steps
 			});
 
 			// Redirect after save
@@ -18,7 +47,8 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
 				$location.path('diagrams/' + response._id);
 
 				// Clear form fields
-				$scope.name = '';
+				$scope.title = '';
+				$scope.description = '';
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
@@ -51,22 +81,18 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
 			});
 		};
 
-    $scope.setEditedGroup = function() {
-      $scope.setEditedGroup = $scope.diagram.group;
-    };
+	    $scope.setEditedGroup = function() {
+	      $scope.setEditedGroup = $scope.diagram.group;
+	    };
 
 		// Find a list of Diagrams
 		$scope.find = function() {
 			$scope.diagrams = Diagrams.query();
 		};
 
-		$scope.getAllGroups = function() {
-			$scope.groups = Groups.query();
-		};
-
 		// Find existing Diagram
 		$scope.findOne = function() {
-      $scope.getAllGroups();
+			$scope.groups = Groups.query();
 			var promise = Diagrams.get({
 				diagramId: $stateParams.diagramId
 			});

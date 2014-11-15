@@ -9,7 +9,7 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
 		$scope.create = function() {
 			// Create new Group object
 			var group = new Groups ({
-				name: this.name, 
+				name: this.name,
 				members: this.members
 			});
 			// Redirect after save
@@ -37,22 +37,22 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
 			}
 		};
 
-    // Remove a Member from the group
-    $scope.removeMember = function (member) {
-      $scope.group.members = $scope.group.members.filter(function (currentMember) {
-        return currentMember.username !== member.username;
-      });
-    };
+	    // Remove a Member from the group
+	    $scope.removeMember = function (member) {
+	      $scope.group.members = $scope.group.members.filter(function (currentMember) {
+	        return currentMember.username !== member.username;
+	      });
+	    };
 
 		// Update existing Group
 		$scope.update = function() {
 			var group = $scope.group;
 
 			var members = group.members.map(function (member) {
-        return member.username;
-      });
+		        return member.username;
+		    });
 			group.members = members.concat($scope.addMembers);
-			
+
 			group.$update(function() {
 				$location.path('groups/' + group._id);
 			}, function(errorResponse) {
@@ -67,7 +67,7 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
 
 		// Find existing Group
 		$scope.findOne = function() {
-			$scope.group = Groups.get({ 
+			$scope.group = Groups.get({
 				groupId: $stateParams.groupId
 			});
 		};

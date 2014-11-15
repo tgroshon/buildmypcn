@@ -1,25 +1,127 @@
-<section data-ng-controller="DiagramsController" data-ng-init="getAllGroups()">
+<section data-ng-controller="DiagramsController">
     <div class="page-header">
         <h1>New Diagram</h1>
     </div>
+    <div data-ng-show="groups.length < 1" class="alert alert-danger"> <!-- ng-show instead of ng-hide so we don't get a flash before the groups load -->
+        Unfortunately you aren't a member of any groups. <a href="/#!/groups/create">Create a group</a> before trying to create a diagram.
+    </div>
     <div class="col-md-12">
-        <form class="form-horizontal" data-ng-submit="create()" novalidate>
+        <form class="form-horizontal" data-ng-submit="create()" novalidate role="form" data-ng-scope>
             <fieldset>
+                <legend>Overall information</legend>
                 <div class="form-group">
-                    <label class="control-label" for="name">Name</label>
-                    <div class="controls">
-                        <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
+                    <label class="col-md-2 control-label" for="pcn.metadata.title">Title</label>
+                    <div class="col-md-10">
+                        <input type="text" data-ng-model="pcn.metadata.title" id="pcn.metadata.title" class="form-control" placeholder="Title" aria-describedby="titleHelpBlock" required>
+                        <span id="titleHelpBlock" class="help-block">Choose a nice title for your amazing diagram</span>
                     </div>
-                    <div class="controls">
-                      <select ng-model="selectedGroup" ng-options="group.name for group in groups" class="form-control"></select>
+                </div>
+                <div class="form-group" ng-show="groups.length">
+                    <label class="col-md-2 control-label" for="group">Group</label>
+                    <div class="col-sm-12 col-md-4">
+                      <select data-ng-model="selectedGroup" data-ng-options="group.name for group in groups" data-ng-required class="form-control"></select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <input type="submit" class="btn btn-default">
+                    <label class="col-md-2 control-label" for="pcn.metadata.description">Description</label>
+                    <div class="col-md-10">
+                        <textarea data-ng-model="pcn.metadata.description" id="pcn.metadata.description" class="form-control" placeholder="Description" required></textarea>
+                    </div>
                 </div>
-				<div data-ng-show="error" class="text-danger">
-					<strong data-ng-bind="error"></strong>
-				</div>
+            </fieldset>
+            <fieldset>
+                <legend>Domains</legend>
+                <div data-ng-repeat="domain in pcn.domains">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="domain-title-{{$index}}">Title {{$index + 1}}</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="domain-title-{{$index}}" name="domain-title-{{$index}}" data-ng-model="domain.title" placeholder="Domain {{$index + 1}} title" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="domain-subtitle-{{$index}}">Subtitle {{$index + 1}}</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="domain-subtitle-{{$index}}" name="domain-subtitle-{{$index}}" data-ng-model="domain.subtitle" placeholder="Domain {{$index + 1}} subtitle" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="button" class="btn btn-danger" data-ng-click="pcn.domains.splice($index, 1)">Delete domain {{$index + 1}}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-info" data-ng-click="addDomain()">Add a new domain</button>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Steps</legend>
+                <div data-ng-repeat="step in pcn.steps">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="step-title-{{$index}}">Title {{$index + 1}}</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="step-title-{{$index}}" name="step-title-{{$index}}" data-ng-model="step.title" placeholder="Step {{$index + 1}} title" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="step-type-{{$index}}">Type {{$index + 1}}</label>
+                        <div class="col-md-10">
+                            <select data-ng-model="step.type" id="step-type-{{$index}}" data-ng-options="stepType.name as stepType.displayedName for stepType in stepTypes" data-ng-required class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="step-emphasized-{{$index}}" name="step-emphasized-{{$index}}" data-ng-model="step.emphasized"> Step {{$index + 1}} emphasized?
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="step-value-specific-{{$index}}">Specific value?</label>
+                        <div class="col-md-10">
+                            <select data-ng-model="step.value_specific" id="step-value-specific-{{$index}}" data-ng-options="valueSpecific for valueSpecific in valueSpecificOptions" data-ng-required class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="step-value-specific-{{$index}}">Generic value?</label>
+                        <div class="col-md-10">
+                            <select data-ng-model="step.value_generic" id="step-value-specific-{{$index}}" data-ng-options="valueGeneric for valueGeneric in valueGenericOptions" data-ng-required class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="step-predecessors-{{$index}}">Predecessors {{$index + 1}}</label>
+                        <div class="col-md-10">
+                            <select multiple data-ng-model="step.predecessors" id="step-predecessors-{{$index}}" class="form-control">
+                                <option data-ng-repeat="predecessor in pcn.steps" value="predecessor.id">{{predecessor.title}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="step-domain-{{$index}}">Domain {{$index + 1}}</label>
+                        <div class="col-md-10">
+                            <select data-ng-model="step.domain" id="step-domain-{{$index}}" data-ng-options="domain as domain.title for domain in pcn.domains" data-ng-required class="form-control"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="button" class="btn btn-danger" data-ng-click="pcn.steps.splice($index, 1)">Delete step {{$index + 1}}</button>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-info" data-ng-click="addStep()">Add a new step</button>
+            </fieldset>
+            <fieldset>
+                <br><br>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" class="btn btn-primary">
+                </div>
+                <div data-ng-show="error" class="text-danger">
+                    <strong data-ng-bind="error"></strong>
+                </div>
             </fieldset>
         </form>
     </div>
