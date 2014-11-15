@@ -26,10 +26,10 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
 
 		$scope.addDomain = function() {
 			$scope.pcn.domains.push(PCN.initDomain('', ''));
-		}
+		};
 		$scope.addStep = function() {
 			$scope.pcn.steps.push(PCN.initStep($scope.pcn.domains[0], '', '', null));
-		}
+		};
 
 		// Create new Diagram
 		$scope.create = function() {
