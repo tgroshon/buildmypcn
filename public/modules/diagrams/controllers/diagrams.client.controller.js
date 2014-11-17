@@ -102,7 +102,8 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
                $scope.selectedGroup = null;
 
                for (var i = 0; i < $scope.groups.length; i++) {
-                   if ($scope.groups[i].name === $scope.diagram.group.name) {
+                   var g = $scope.groups[i];
+                   if (g.name === $scope.diagram.group.name && g.created === $scope.diagram.group.created) {
                        $scope.selectedGroup = $scope.groups[i];
                        break;
                    }
