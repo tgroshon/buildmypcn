@@ -54,65 +54,7 @@
                     <button type="button" class="btn btn-info" data-ng-click="addDomain()">Add a new domain</button>
                 </div>
             </fieldset>
-            <fieldset>
-                <legend>Steps</legend>
-                <div data-ng-repeat="step in pcn.steps">
-                    <div class="form-group">
-                        <label class="col-md-2 control-label" for="step-title-{{$index}}">Title {{$index + 1}}</label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" id="step-title-{{$index}}" name="step-title-{{$index}}" data-ng-model="step.title" placeholder="Step {{$index + 1}} title" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-2 control-label" for="step-type-{{$index}}">Type {{$index + 1}}</label>
-                        <div class="col-md-10">
-                            <select data-ng-model="step.type" id="step-type-{{$index}}" data-ng-options="stepType.name as stepType.displayedName for stepType in stepTypes" data-ng-required class="form-control"></select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" id="step-emphasized-{{$index}}" name="step-emphasized-{{$index}}" data-ng-model="step.emphasized"> Step {{$index + 1}} emphasized?
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-2 control-label" for="step-value-specific-{{$index}}">Specific value?</label>
-                        <div class="col-md-10">
-                            <select data-ng-model="step.value_specific" id="step-value-specific-{{$index}}" data-ng-options="valueSpecific for valueSpecific in valueSpecificOptions" data-ng-required class="form-control"></select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-2 control-label" for="step-value-specific-{{$index}}">Generic value?</label>
-                        <div class="col-md-10">
-                            <select data-ng-model="step.value_generic" id="step-value-specific-{{$index}}" data-ng-options="valueGeneric for valueGeneric in valueGenericOptions" data-ng-required class="form-control"></select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-2 control-label" for="step-predecessors-{{$index}}">Predecessors {{$index + 1}}</label>
-                        <div class="col-md-10">
-                            <select multiple data-ng-model="step.predecessors" id="step-predecessors-{{$index}}" class="form-control">
-                                <option data-ng-repeat="predecessor in pcn.steps" value="predecessor.id">{{predecessor.title}}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-2 control-label" for="step-domain-{{$index}}">Domain {{$index + 1}}</label>
-                        <div class="col-md-10">
-                            <select data-ng-model="step.domain" id="step-domain-{{$index}}" data-ng-options="domain as domain.title for domain in pcn.domains" data-ng-required class="form-control"></select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <button type="button" class="btn btn-danger" data-ng-click="pcn.steps.splice($index, 1)">Delete step {{$index + 1}}</button>
-                        </div>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-info" data-ng-click="addStep()">Add a new step</button>
-            </fieldset>
+            <tasks></tasks>
             <fieldset>
                 <br><br>
                 <div class="form-group">
