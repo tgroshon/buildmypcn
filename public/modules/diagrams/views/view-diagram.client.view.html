@@ -1,10 +1,10 @@
 <section data-ng-controller="DiagramsController" data-ng-init="findOne()">
 	<div class="page-header">
-		<h1 data-ng-bind="pcn.title"></h1>
+		<h1 data-ng-bind="diagram.title"></h1>
 	</div>
 
 	<div class="pull-right">
-		<a class="btn btn-primary" href="/#!/diagrams/{{pcn._id}}/edit">
+		<a class="btn btn-primary" href="/#!/diagrams/{{diagram._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>
 		<a class="btn btn-primary" data-ng-click="remove();">
@@ -15,9 +15,9 @@
 	<small>
 		<em class="text-muted">
 			Created on
-			<span data-ng-bind="pcn.created | date:'mediumDate'"></span>
+			<span data-ng-bind="diagram.created | date:'mediumDate'"></span>
       for group
-      <strong>{{pcn.group.name}}</strong>
+      <strong>{{diagram.group.name}}</strong>
 		</em>
 	</small>
 
