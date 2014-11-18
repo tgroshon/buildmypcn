@@ -35,8 +35,8 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
 		$scope.create = function() {
 			// Create new Diagram object
 			var diagram = new Diagrams ({
-				title: this.pcn.metadata.title,
-        		group: this.selectedGroup._id,
+        title: this.pcn.metadata.title,
+        group: this.selectedGroup._id,
 				description: this.pcn.metadata.description,
 				domains: this.pcn.domains,
 				steps: this.pcn.steps
@@ -81,9 +81,9 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
 			});
 		};
 
-	    $scope.setEditedGroup = function() {
-	      $scope.setEditedGroup = $scope.diagram.group;
-	    };
+    $scope.setEditedGroup = function() {
+      $scope.setEditedGroup = $scope.diagram.group;
+    };
 
 		// Find a list of Diagrams
 		$scope.find = function() {
@@ -97,18 +97,17 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
 				diagramId: $stateParams.diagramId
 			});
 
-            promise.$promise.then(function(data) {
-               $scope.pcn = data;
-               $scope.selectedGroup = null;
+      promise.$promise.then(function(diagram) {
+         $scope.diagram = diagram;
+         $scope.selectedGroup = null;
 
-               for (var i = 0; i < $scope.groups.length; i++) {
-                   var g = $scope.groups[i];
-                   if (g.name === $scope.pcn.group.name && g.created === $scope.pcn.group.created) {
-                       $scope.selectedGroup = $scope.groups[i];
-                       break;
-                   }
-               }
-            });
+         for (var i = 0; i < $scope.groups.length; i++) {
+           if ($scope.groups[i]._id === $scope.diagram.group._id) {
+             $scope.selectedGroup = $scope.groups[i];
+             break;
+           }
+         }
+      });
 		};
 	}
 ]);
