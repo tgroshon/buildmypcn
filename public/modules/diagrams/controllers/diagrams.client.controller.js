@@ -72,7 +72,7 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
 
 		// Update existing Diagram
 		$scope.update = function() {
-			var diagram = $scope.diagram;
+			var diagram = $scope.pcn;
             diagram.group = $scope.selectedGroup;
 			diagram.$update(function() {
 				$location.path('diagrams/' + diagram._id);
@@ -98,12 +98,12 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
 			});
 
             promise.$promise.then(function(data) {
-               $scope.diagram = data;
+               $scope.pcn = data;
                $scope.selectedGroup = null;
 
                for (var i = 0; i < $scope.groups.length; i++) {
                    var g = $scope.groups[i];
-                   if (g.name === $scope.diagram.group.name && g.created === $scope.diagram.group.created) {
+                   if (g.name === $scope.pcn.group.name && g.created === $scope.pcn.group.created) {
                        $scope.selectedGroup = $scope.groups[i];
                        break;
                    }
