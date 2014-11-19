@@ -3,6 +3,19 @@
 angular.module('diagrams').factory('PCN', ['uuid',
 	function (uuid) {
 		return {
+      CONSTANTS: {
+        'PREDECESSOR_TYPES': {
+          NORMAL: 'normal_relationship',
+          LOOSE: 'loose_temporal_relationship'
+        },
+        'CONNECTOR': {
+          INDEPENDENT: '',
+          SURROGATE: '',
+          'DIRECT_LEADING': 'direct_leading',
+          'DIRECT_SHARED': 'direct_shared'
+        }
+      },
+
       initPCN: function (title, description, author) {
         return {
           'metadata': {
@@ -12,7 +25,7 @@ angular.module('diagrams').factory('PCN', ['uuid',
           },
           'domains':[],
           'steps':[]
-	};
+        };
       },
 
       initStep: function (domain, title, type, relatedDomain) {
@@ -34,7 +47,7 @@ angular.module('diagrams').factory('PCN', ['uuid',
             },
           },
           'problems': []
-		};
+        };
 
         if (relatedDomain)
           step.domain.region.with_domain = relatedDomain.id;
@@ -42,12 +55,33 @@ angular.module('diagrams').factory('PCN', ['uuid',
         return step;
       },
 
+      initPredecessor: function (id, type, title) {
+        return {
+          "id": id,
+          "type": type,
+          "title": title 
+        }
+      },
+
+      initStepDomain: function (owner, type, related) {
+        if (!owner) owner = {};
+        if (!related) related = {};
+
+        return {
+          id: owner.id,
+          region: {
+            type: type,
+            'with_domain': related.id 
+          }
+        }
+      },
+
       initDomain: function (title, subtitle) {
         return {
           'id': uuid.generate(),
           'title': title,
           'subtitle': subtitle
-		};
+        }
       }
     };
   }
