@@ -10,9 +10,9 @@
             <fieldset>
                 <legend>Overall information</legend>
                 <div class="form-group">
-                    <label class="col-md-2 control-label" for="pcn.metadata.title">Title</label>
+                    <label class="col-md-2 control-label" for="diagram.metadata.title">Title</label>
                     <div class="col-md-10">
-                        <input type="text" data-ng-model="pcn.metadata.title" id="pcn.metadata.title" class="form-control" placeholder="Title" aria-describedby="titleHelpBlock" required>
+                        <input type="text" data-ng-model="diagram.metadata.title" id="diagram.metadata.title" class="form-control" placeholder="Title" aria-describedby="titleHelpBlock" required>
                         <span id="titleHelpBlock" class="help-block">Choose a nice title for your amazing diagram</span>
                     </div>
                 </div>
@@ -23,15 +23,15 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 control-label" for="pcn.metadata.description">Description</label>
+                    <label class="col-md-2 control-label" for="diagram.metadata.description">Description</label>
                     <div class="col-md-10">
-                        <textarea data-ng-model="pcn.metadata.description" id="pcn.metadata.description" class="form-control" placeholder="Description" required></textarea>
+                        <textarea data-ng-model="diagram.metadata.description" id="diagram.metadata.description" class="form-control" placeholder="Description" required></textarea>
                     </div>
                 </div>
             </fieldset>
             <fieldset>
                 <legend>Domains</legend>
-                <div data-ng-repeat="domain in pcn.domains">
+                <div data-ng-repeat="domain in diagram.domains">
                     <div class="form-group">
                         <label class="col-md-2 control-label" for="domain-title-{{$index}}">Title {{$index + 1}}</label>
                         <div class="col-md-10">
@@ -46,7 +46,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <button type="button" class="btn btn-danger" data-ng-click="pcn.domains.splice($index, 1)">Delete domain {{$index + 1}}</button>
+                            <button type="button" class="btn btn-danger" data-ng-click="diagram.domains.splice($index, 1)">Delete domain {{$index + 1}}</button>
                         </div>
                     </div>
                 </div>

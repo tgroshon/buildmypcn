@@ -20,26 +20,26 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
 		$scope.valueGenericOptions = [-3, -2, -1, 0, 1, 2, 3];
 
 		// Create a new, blank PCN object
-		$scope.pcn = PCN.initPCN('', '', '');
-		$scope.pcn.domains = [PCN.initDomain('', 'Provider'), PCN.initDomain('', 'Customer')];
-		$scope.pcn.steps = [PCN.initStep($scope.pcn.domains[0], '', '', null)];
+		$scope.diagram = PCN.initPCN('', '', '');
+		$scope.diagram.domains = [PCN.initDomain('', 'Provider'), PCN.initDomain('', 'Customer')];
+		$scope.diagram.steps = [PCN.initStep($scope.diagram.domains[0], '', '', null)];
 
 		$scope.addDomain = function() {
-			$scope.pcn.domains.push(PCN.initDomain('', ''));
+			$scope.diagram.domains.push(PCN.initDomain('', ''));
 		};
 		$scope.addStep = function() {
-			$scope.pcn.steps.push(PCN.initStep($scope.pcn.domains[0], '', '', null));
+			$scope.diagram.steps.push(PCN.initStep($scope.diagram.domains[0], '', '', null));
 		};
 
 		// Create new Diagram
 		$scope.create = function() {
 			// Create new Diagram object
 			var diagram = new Diagrams ({
-        title: this.pcn.metadata.title,
+        title: this.diagram.metadata.title,
         group: this.selectedGroup._id,
-				description: this.pcn.metadata.description,
-				domains: this.pcn.domains,
-				steps: this.pcn.steps
+				description: this.diagram.metadata.description,
+				domains: this.diagram.domains,
+				steps: this.diagram.steps
 			});
 
 			// Redirect after save
@@ -72,7 +72,7 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
 
 		// Update existing Diagram
 		$scope.update = function() {
-			var diagram = $scope.pcn;
+			var diagram = $scope.diagram;
             diagram.group = $scope.selectedGroup;
 			diagram.$update(function() {
 				$location.path('diagrams/' + diagram._id);
