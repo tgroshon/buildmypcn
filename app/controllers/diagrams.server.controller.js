@@ -9,6 +9,22 @@ var mongoose = require('mongoose'),
 	Group = mongoose.model('Group'),
 	_ = require('lodash');
 
+var svgBuilder = require('../lib/svg-builder');
+
+/**
+ *
+ */
+exports.graph = function(req, res) {
+  var diagram = {}; // TODO: lookup Diagram by ID
+  var svg = svgBuilder(diagram);
+
+  res.set({
+    'Content-Type': 'image/svg+xml',
+    'X-Frame-Options': 'SAMEORIGIN'
+  });
+  res.send(svg);
+};
+
 /**
  * Create a Diagram
  */

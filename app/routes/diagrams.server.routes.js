@@ -9,10 +9,14 @@ module.exports = function(app) {
 		.get(users.requiresLogin, diagrams.list)
 		.post(users.requiresLogin, diagrams.create);
 
+  app.route('/diagrams/graph')
+    .get(diagrams.graph);
+
 	app.route('/diagrams/:diagramId')
 		.get(users.requiresLogin, diagrams.hasAuthorization, diagrams.read)
 		.put(users.requiresLogin, diagrams.hasAuthorization, diagrams.update)
 		.delete(users.requiresLogin, diagrams.hasAuthorization, diagrams.delete);
+
 
 	// Finish by binding the Diagram middleware
 	app.param('diagramId', diagrams.diagramByID);
