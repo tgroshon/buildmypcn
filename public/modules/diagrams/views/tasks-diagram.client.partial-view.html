@@ -16,11 +16,9 @@
             <td><input type="checkbox" id="step-emphasized-{{$index}}" name="step-emphasized-{{$index}}" data-ng-model="step.emphasized"> Step {{$index + 1}} emphasized?</td>
             <td><select data-ng-model="step.value_specific" id="step-value-specific-{{$index}}" data-ng-options="valueSpecific for valueSpecific in valueSpecificOptions" data-ng-required class="form-control"></select></td>
             <td><select data-ng-model="step.value_generic" id="step-value-specific-{{$index}}" data-ng-options="valueGeneric for valueGeneric in valueGenericOptions" data-ng-required class="form-control"></select></td>
-            <td><select multiple data-ng-model="step.predecessors" id="step-predecessors-{{$index}}" class="form-control">
-                <option data-ng-repeat="predecessor in diagram.steps" value="predecessor.id">{{predecessor.title}}</option>
-            </select></td>
+            <td>{{step.predecessors[0].type}}</td>
             <td><select data-ng-model="step.domain" id="step-domain-{{$index}}" data-ng-options="domain as domain.title for domain in diagram.domains" data-ng-required class="form-control"></select></td>
-            <td><button type="button" class="btn btn-danger" data-ng-click="diagram.steps.splice($index, 1)">Delete step {{$index + 1}}</button></td>
+            <td><button type="button" class="btn btn-danger" data-ng-click="deleteStep($index)">Delete step {{$index + 1}}</button></td>
         </tr>
     </table>
     <button type="button" class="btn btn-info" data-ng-click="addStep()">Add a new step</button>
