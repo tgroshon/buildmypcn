@@ -7,53 +7,6 @@
     </div>
     <div class="col-md-12">
         <form class="form-horizontal" data-ng-submit="create()" novalidate role="form" data-ng-scope>
-            <fieldset>
-                <legend>Overall information</legend>
-                <div class="form-group">
-                    <label class="col-md-2 control-label" for="diagram.metadata.title">Title</label>
-                    <div class="col-md-10">
-                        <input type="text" data-ng-model="diagram.metadata.title" id="diagram.metadata.title" class="form-control" placeholder="Title" aria-describedby="titleHelpBlock" required>
-                        <span id="titleHelpBlock" class="help-block">Choose a nice title for your amazing diagram</span>
-                    </div>
-                </div>
-                <div class="form-group" ng-show="groups.length">
-                    <label class="col-md-2 control-label" for="group">Group</label>
-                    <div class="col-sm-12 col-md-4">
-                      <select data-ng-model="selectedGroup" data-ng-options="group.name for group in groups" data-ng-required class="form-control"></select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-2 control-label" for="diagram.metadata.description">Description</label>
-                    <div class="col-md-10">
-                        <textarea data-ng-model="diagram.metadata.description" id="diagram.metadata.description" class="form-control" placeholder="Description" required></textarea>
-                    </div>
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend>Domains</legend>
-                <div data-ng-repeat="domain in diagram.domains">
-                    <div class="form-group">
-                        <label class="col-md-2 control-label" for="domain-title-{{$index}}">Title {{$index + 1}}</label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" id="domain-title-{{$index}}" name="domain-title-{{$index}}" data-ng-model="domain.title" placeholder="Domain {{$index + 1}} title" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-2 control-label" for="domain-subtitle-{{$index}}">Subtitle {{$index + 1}}</label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" id="domain-subtitle-{{$index}}" name="domain-subtitle-{{$index}}" data-ng-model="domain.subtitle" placeholder="Domain {{$index + 1}} subtitle" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <button type="button" class="btn btn-danger" data-ng-click="diagram.domains.splice($index, 1)">Delete domain {{$index + 1}}</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <button type="button" class="btn btn-info" data-ng-click="addDomain()">Add a new domain</button>
-                </div>
-            </fieldset>
             <tasks></tasks>
             <fieldset>
                 <br><br>

@@ -1,25 +1,74 @@
-<fieldset>
-    <legend>Steps</legend>
-    <table data-toggle="table">
-        <tr>
-            <th>Title</th>
-            <th>Type</th>
-            <th>Emphasized?</th>
-            <th>Specific value</th>
-            <th>Generic value</th>
-            <th>Predecessors</th>
-            <th>Domain</th>
-        </tr>
-        <tr data-ng-repeat="step in diagram.steps">
-            <td><input type="text" class="form-control" id="step-title-{{$index}}" name="step-title-{{$index}}" data-ng-model="step.title" placeholder="Step {{$index + 1}} title" required></td>
-            <td><select data-ng-model="step.type" id="step-type-{{$index}}" data-ng-options="stepType.name as stepType.displayedName for stepType in stepTypes" data-ng-required class="form-control"></select></td>
-            <td><input type="checkbox" id="step-emphasized-{{$index}}" name="step-emphasized-{{$index}}" data-ng-model="step.emphasized"> Step {{$index + 1}} emphasized?</td>
-            <td><select data-ng-model="step.value_specific" id="step-value-specific-{{$index}}" data-ng-options="valueSpecific for valueSpecific in valueSpecificOptions" data-ng-required class="form-control"></select></td>
-            <td><select data-ng-model="step.value_generic" id="step-value-specific-{{$index}}" data-ng-options="valueGeneric for valueGeneric in valueGenericOptions" data-ng-required class="form-control"></select></td>
-            <td>{{step.predecessors[0].type}}</td>
-            <td><select data-ng-model="step.domain" id="step-domain-{{$index}}" data-ng-options="domain as domain.title for domain in diagram.domains" data-ng-required class="form-control"></select></td>
-            <td><button type="button" class="btn btn-danger" data-ng-click="deleteStep($index)">Delete step {{$index + 1}}</button></td>
-        </tr>
-    </table>
-    <button type="button" class="btn btn-info" data-ng-click="addStep()">Add a new step</button>
-</fieldset>
+<div>
+    <fieldset>
+        <legend>Overall information</legend>
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="diagram.metadata.title">Title</label>
+            <div class="col-md-10">
+                <input type="text" data-ng-model="diagram.metadata.title" id="diagram.metadata.title" class="form-control" placeholder="Title" aria-describedby="titleHelpBlock" required>
+                <span id="titleHelpBlock" class="help-block">Choose a nice title for your amazing diagram</span>
+            </div>
+        </div>
+        <div class="form-group" ng-show="groups.length">
+            <label class="col-md-2 control-label" for="group">Group</label>
+            <div class="col-sm-12 col-md-4">
+                <select data-ng-model="selectedGroup" data-ng-options="group.name for group in groups" data-ng-required class="form-control"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="diagram.metadata.description">Description</label>
+            <div class="col-md-10">
+                <textarea data-ng-model="diagram.metadata.description" id="diagram.metadata.description" class="form-control" placeholder="Description" required></textarea>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Domains</legend>
+        <div data-ng-repeat="domain in diagram.domains">
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="domain-title-{{$index}}">Title {{$index + 1}}</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="domain-title-{{$index}}" name="domain-title-{{$index}}" data-ng-model="domain.title" placeholder="Domain {{$index + 1}} title" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="domain-subtitle-{{$index}}">Subtitle {{$index + 1}}</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="domain-subtitle-{{$index}}" name="domain-subtitle-{{$index}}" data-ng-model="domain.subtitle" placeholder="Domain {{$index + 1}} subtitle" required>
+                </div>
+            </div>
+            <!--<div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="button" class="btn btn-danger" data-ng-click="diagram.domains.splice($index, 1)">Delete domain {{$index + 1}}</button>
+                </div>
+            </div>-->
+        </div>
+        <!--<div class="form-group">
+            <button type="button" class="btn btn-info" data-ng-click="addDomain()">Add a new domain</button>
+        </div>-->
+    </fieldset>
+    <fieldset>
+        <legend>Steps</legend>
+        <table data-toggle="table">
+            <tr>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Emphasized?</th>
+                <th>Specific value</th>
+                <th>Generic value</th>
+                <th>Predecessors</th>
+                <th>Domain</th>
+            </tr>
+            <tr data-ng-repeat="step in diagram.steps">
+                <td><input type="text" class="form-control" id="step-title-{{$index}}" name="step-title-{{$index}}" data-ng-model="step.title" placeholder="Step {{$index + 1}} title" required></td>
+                <td><select data-ng-model="step.type" id="step-type-{{$index}}" data-ng-options="stepType.name as stepType.displayedName for stepType in stepTypes" data-ng-required class="form-control"></select></td>
+                <td><input type="checkbox" id="step-emphasized-{{$index}}" name="step-emphasized-{{$index}}" data-ng-model="step.emphasized"> Step {{$index + 1}} emphasized?</td>
+                <td><select data-ng-model="step.value_specific" id="step-value-specific-{{$index}}" data-ng-options="valueSpecific for valueSpecific in valueSpecificOptions" data-ng-required class="form-control"></select></td>
+                <td><select data-ng-model="step.value_generic" id="step-value-specific-{{$index}}" data-ng-options="valueGeneric for valueGeneric in valueGenericOptions" data-ng-required class="form-control"></select></td>
+                <td>{{step.predecessors[0].type}}</td>
+                <td><select data-ng-model="step.domain" id="step-domain-{{$index}}" data-ng-options="domain as domain.title for domain in diagram.domains" data-ng-required class="form-control"></select></td>
+                <td><button type="button" class="btn btn-danger" data-ng-click="deleteStep($index)">Delete step {{$index + 1}}</button></td>
+            </tr>
+        </table>
+        <button type="button" class="btn btn-info" data-ng-click="addStep()">Add a new step</button>
+    </fieldset>
+</div>
