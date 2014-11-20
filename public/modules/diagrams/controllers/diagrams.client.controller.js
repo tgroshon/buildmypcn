@@ -135,6 +135,16 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
                         break;
                     }
                 }
+
+                for (var i = 0; i < $scope.diagram.steps.length; i++) {
+                    var step = $scope.diagram.steps[i];
+                    for (var j = 0; j < $scope.diagram.domains.length; j++) {
+                        if (step.domain.id === $scope.diagram.domains[j].id) {
+                            step.domain = $scope.diagram.domains[j];
+                            break;
+                        }
+                    }
+                }
             });
         };
     }
