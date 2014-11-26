@@ -1,0 +1,498 @@
+{
+  "metadata":
+  {
+    "title": "Pizza Parlor PCN",
+    "description": "This PCN represents the different interactions between a pizza restaurant and a customer.",
+    "author": "Morgan Young"
+  },
+
+  "domains":
+  [
+    {
+      "id": "GUID_1234",
+      "title": "Pizza Restaurant",
+      "subtitle": "Provider"
+    },
+
+    {
+      "id": "GUID_2345",
+      "title": "Customer",
+      "subtitle": "Customer"
+    }
+  ],
+
+  "steps":
+  [
+    {
+      "id": "GUID_3456",
+      "title": "travel to restaurant",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 0,
+      "value_generic": 0,
+      "predecessors": [],
+      "domain":
+      {
+        "id": "GUID_2345",
+        "region":
+        {
+          "type": "independent",
+          "with_domain": ""
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "GUID_4567",
+      "title": "wait to be seated",
+      "type": "wait",
+      "emphasized": false,
+      "value_specific": -1,
+      "value_generic": 0,
+      "predecessors":
+      [
+        {
+          "id": "GUID_3456",
+          "type": "normal_relationship",
+          "title": ""
+        }
+      ],
+      "domain":
+      {
+        "id": "GUID_2345",
+        "region":
+        {
+          "type": "surrogate",
+          "with_domain": "GUID_1234"
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "GUID_5678",
+      "title": "seat customer",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 0,
+      "value_generic": 0,
+      "predecessors":
+      [
+        {
+          "id": "GUID_4567",
+          "type": "normal_relationship",
+          "title": ""
+        }
+      ],
+      "domain":
+      {
+        "id": "GUID_1234",
+        "region":
+        {
+          "type": "direct_shared",
+          "with_domain": "GUID_2345"
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "GUID_6789",
+      "title": "review nenu",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 1,
+      "value_generic": 0,
+      "predecessors":
+      [
+        {
+          "id": "GUID_5678",
+          "type": "normal_relationship",
+          "title": ""
+        }
+      ],
+      "domain":
+      {
+        "id": "GUID_2345",
+        "region":
+        {
+          "type": "surrogate",
+          "with_domain": "GUID_1234"
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "GUID_78910",
+      "title": "create order",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 1,
+      "value_generic": 0,
+      "predecessors":
+      [
+        {
+          "id": "GUID_6789",
+          "type": "normal_relationship",
+          "title": ""
+        }
+      ],
+      "domain":
+      {
+        "id": "GUID_2345",
+        "region":
+        {
+          "type": "direct_shared",
+          "with_domain": "GUID_1234"
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "GUID_78911",
+      "title": "wait for pizza",
+      "type": "wait",
+      "emphasized": false,
+      "value_specific": -1,
+      "value_generic": 0,
+      "predecessors":
+      [
+        {
+          "id": "GUID_78910",
+          "type": "normal_relationship",
+          "title": ""
+        }
+      ],
+      "domain":
+      {
+        "id": "GUID_2345",
+        "region":
+        {
+          "type": "surrogate",
+          "with_domain": "GUID_1234"
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "GUID_78912",
+      "title": "eat pizza",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 2,
+      "value_generic": 0,
+      "predecessors":
+      [
+        {
+          "id": "GUID_78911",
+          "type": "normal_relationship",
+          "title": ""
+        },
+
+        {
+          "id": "GUID_78917",
+          "type": "normal_relationship",
+          "title": ""
+        }
+      ],
+      "domain":
+      {
+        "id": "GUID_2345",
+        "region":
+        {
+          "type": "surrogate",
+          "with_domain": "GUID_1234"
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "GUID_78913",
+      "title": "develop recepies",
+      "type": "divergent_process",
+      "emphasized": false,
+      "value_specific": 0,
+      "value_generic": -1,
+      "predecessors": [],
+      "domain":
+      {
+        "id": "GUID_1234",
+        "region":
+        {
+          "type": "independent",
+          "with_domain": ""
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "GUID_78914",
+      "title": "preheat ovens",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 0,
+      "value_generic": -1,
+      "predecessors": [],
+      "domain":
+      {
+        "id": "GUID_1234",
+        "region":
+        {
+          "type": "independent",
+          "with_domain": ""
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "GUID_78915",
+      "title": "maintain supplies",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 0,
+      "value_generic": -2,
+      "predecessors": [],
+      "domain":
+      {
+        "id": "GUID_1234",
+        "region":
+        {
+          "type": "independent",
+          "with_domain": ""
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "GUID_78916",
+      "title": "assemble and cook pizza",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 0,
+      "value_generic": -1,
+      "predecessors":
+      [
+        {
+          "id": "GUID_78913",
+          "type": "loose_temporal_relationship",
+          "title": ""
+        },
+
+        {
+          "id": "GUID_78914",
+          "type": "loose_temporal_relationship",
+          "title": ""
+        },
+
+        {
+          "id": "GUID_78915",
+          "type": "loose_temporal_relationship",
+          "title": ""
+        },
+
+        {
+          "id": "GUID_78910",
+          "type": "normal_relationship",
+          "title": ""
+        }
+      ],
+      "domain":
+      {
+        "id": "GUID_1234",
+        "region":
+        {
+          "type": "surrogate",
+          "with_domain": "GUID_2345"
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "GUID_78917",
+      "title": "serve pizza",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 0,
+      "value_generic": 0,
+      "predecessors":
+      [
+        {
+          "id": "GUID_78916",
+          "type": "normal_relationship",
+          "title": ""
+        }
+      ],
+      "domain":
+      {
+        "id": "GUID_1234",
+        "region":
+        {
+          "type": "direct_shared",
+          "with_domain": "GUID_2345"
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "GUID_78918",
+      "title": "prepare check",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 0,
+      "value_generic": 0,
+      "predecessors":
+      [
+        {
+          "id": "GUID_78912",
+          "type": "normal_relationship",
+          "title": ""
+        }
+      ],
+      "domain":
+      {
+        "id": "GUID_1234",
+        "region":
+        {
+          "type": "surrogate",
+          "with_domain": "GUID_2345"
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "GUID_78919",
+      "title": "present check",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 0,
+      "value_generic": 0,
+      "predecessors":
+      [
+        {
+          "id": "GUID_78918",
+          "type": "normal_relationship",
+          "title": ""
+        }
+      ],
+      "domain":
+      {
+        "id": "GUID_1234",
+        "region":
+        {
+          "type": "direct_shared",
+          "with_domain": "GUID_2345"
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "GUID_78920",
+      "title": "provide payment",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 0,
+      "value_generic": 1,
+      "predecessors":
+      [
+        {
+          "id": "GUID_78919",
+          "type": "normal_relationship",
+          "title": ""
+        }
+      ],
+      "domain":
+      {
+        "id": "GUID_2345",
+        "region":
+        {
+          "type": "direct_shared",
+          "with_domain": "GUID_1234"
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "GUID_78921",
+      "title": "return home",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 0,
+      "value_generic": 0,
+      "predecessors":
+      [
+        {
+          "id": "GUID_78920",
+          "type": "normal_relationship",
+          "title": ""
+        }
+      ],
+      "domain":
+      {
+        "id": "GUID_2345",
+        "region":
+        {
+          "type": "independent",
+          "with_domain": ""
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "GUID_78922",
+      "title": "eat leftovers",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 1,
+      "value_generic": 0,
+      "predecessors":
+      [
+        {
+          "id": "GUID_78921",
+          "type": "loose_temporal_relationship",
+          "title": ""
+        }
+      ],
+      "domain":
+      {
+        "id": "GUID_2345",
+        "region":
+        {
+          "type": "independent",
+          "with_domain": ""
+        }
+      },
+
+      "problems": []
+    }
+  ]
+}

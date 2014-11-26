@@ -9,13 +9,14 @@ var mongoose = require('mongoose'),
 	Group = mongoose.model('Group'),
 	_ = require('lodash');
 
-var svgBuilder = require('../lib/svg-builder');
+var svgBuilder = require('../lib/svg-builder/svg-builder');
 
 /**
  *
  */
 exports.graph = function(req, res) {
   var diagram = {}; // TODO: lookup Diagram by ID
+  diagram = require('../lib/svg-builder/test.json');
   var svg = svgBuilder(diagram);
 
   res.set({
