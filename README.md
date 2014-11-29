@@ -1,7 +1,13 @@
 buildmypcn
 ==========
 
-[MeanJS](http://meanjs.org/) application.
+BuildMyPCN is a tool for developing Process Chain Network diagrams.
+It is heavily based on Dr. Scott Sampson's [PCN Wizard](http://services.byu.edu/pcn/pcn-wizard-0_4.html)
+
+BuildMyPCN is a [MeanJS](http://meanjs.org/) application.
+
+Getting Started
+===============
 
 Prerequisites:
 

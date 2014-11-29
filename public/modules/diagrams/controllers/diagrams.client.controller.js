@@ -105,7 +105,7 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             for (var i = 1; i < diagram.steps.length; i++) {
                 var step = diagram.steps[i];
                 var previousStep = diagram.steps[i - 1];
-                step.predecessors = [PCN.initPredecessor(previousStep.id, $scope.predecessorTypes[0].displayName, previousStep.title)]
+                step.predecessors = [PCN.initPredecessor(previousStep.id, $scope.predecessorTypes[0].displayName, previousStep.title)];
             }
         }
 
@@ -128,15 +128,17 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             promise.$promise.then(function (diagram) {
                 $scope.diagram = diagram;
                 $scope.selectedGroup = null;
+                
+                var i;
 
-                for (var i = 0; i < $scope.groups.length; i++) {
+                for (i = 0; i < $scope.groups.length; i++) {
                     if ($scope.groups[i]._id === $scope.diagram.group._id) {
                         $scope.selectedGroup = $scope.groups[i];
                         break;
                     }
                 }
 
-                for (var i = 0; i < $scope.diagram.steps.length; i++) {
+                for (i = 0; i < $scope.diagram.steps.length; i++) {
                     var step = $scope.diagram.steps[i];
                     for (var j = 0; j < $scope.diagram.domains.length; j++) {
                         if (step.domain.id === $scope.diagram.domains[j].id) {

@@ -1,10 +1,14 @@
 'use strict';
 
+/**
+ * Module dependencies.
+ */
 var passport = require('passport'),
 	User = require('mongoose').model('User'),
 	path = require('path'),
 	config = require('./config');
 
+// Provide login mechanisms like Facebook, Google, and Github
 module.exports = function() {
 	// Serialize sessions
 	passport.serializeUser(function(user, done) {

@@ -57,10 +57,10 @@ angular.module('diagrams').factory('PCN', ['uuid',
 
       initPredecessor: function (id, type, title) {
         return {
-          "id": id,
-          "type": type,
-          "title": title 
-        }
+          'id': id,
+          'type': type,
+          'title': title 
+        };
       },
 
       initStepDomain: function (owner, type, related) {
@@ -73,7 +73,7 @@ angular.module('diagrams').factory('PCN', ['uuid',
             type: type,
             'with_domain': related.id 
           }
-        }
+        };
       },
 
       initDomain: function (title, subtitle) {
@@ -81,7 +81,7 @@ angular.module('diagrams').factory('PCN', ['uuid',
           'id': uuid.generate(),
           'title': title,
           'subtitle': subtitle
-        }
+        };
       }
     };
   }

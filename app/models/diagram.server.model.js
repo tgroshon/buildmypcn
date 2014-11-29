@@ -38,6 +38,10 @@ var DiagramSchema = new Schema({
 	}
 });
 
+/**
+ * Retrieve group objects based on IDs in groups
+ * Pass callback cb to respond when data comes back
+ */
 DiagramSchema.statics.findByGroups = function (groups, cb) {
   if (!groups) return cb();
   var groupIds = groups.map(function (group) { return group._id; });
