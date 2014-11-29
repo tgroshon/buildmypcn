@@ -20,6 +20,7 @@ var express = require('express'),
 	consolidate = require('consolidate'),
 	path = require('path');
 
+// ExpressJS URL Routing mechanisms
 module.exports = function(db) {
 	// Initialize express app
 	var app = express();

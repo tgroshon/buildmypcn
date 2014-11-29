@@ -29,6 +29,9 @@ var GroupSchema = new Schema({
 	}
 });
 
+/**
+ * Pre-save hook for groups
+ */
 GroupSchema.pre('save', function(next){
 	var model = this;
 	var user = mongoose.model('User');
@@ -43,6 +46,10 @@ GroupSchema.pre('save', function(next){
     });
 });
 
+/**
+ * Convenience method to find groups by a given user object
+ * User object may be a stub object with _id property given
+ */
 GroupSchema.statics.findByUser = function (user, cb) {
   this.find()
     .sort('-created')
