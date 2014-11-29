@@ -9,7 +9,7 @@ module.exports = function(app) {
 		.get(users.requiresLogin, diagrams.list)
 		.post(users.requiresLogin, diagrams.create);
 
-  app.route('/diagrams/graph')
+  app.route('/diagrams/:diagramId/graph')
     .get(diagrams.graph);
 
 	app.route('/diagrams/:diagramId')

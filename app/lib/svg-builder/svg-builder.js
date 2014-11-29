@@ -17,7 +17,7 @@ module.exports = function(pcn) {
   mutAdjustDiagramSize(root, layoutTree);
 
   return root.toString();
-}
+};
 
 function mutAdjustSteps(layoutTree) {
   var node, preNode, region;
@@ -42,7 +42,7 @@ function mutAdjustSteps(layoutTree) {
 
 function mutBumpNode(node, layoutTree, startY) {
   var prevY = startY;
-  if (node.y == startY) {
+  if (node.y === startY) {
     node.y = startY + constants.ROW_SPACE + constants.STEP_HEIGHT;
   } else {
     node.y = startY + constants.ROW_SPACE;
@@ -103,7 +103,7 @@ function svgTemplate(diagramTitle, domains) {
                           {pubID: null, sysID: null},
                           {allowSurrogateChars: false, skipNullAttributes: false, 
                           headless: true, ignoreDecorators: false, stringify: {}});
-  root.att('xmlns', "http://www.w3.org/2000/svg");
+  root.att('xmlns', 'http://www.w3.org/2000/svg');
   root.ele('title', 'PCN Diagram');
   mutAddShapeDefs(root);
 
@@ -134,7 +134,8 @@ function mutAddShapeDefs(root) {
     viewBox: '0 0 100 100',
     orient: 'auto',
     markerUnits: 'strokeWidth'
-  })
+  });
+
   markerArrow.ele('path', {
     d: 'm100,50 l-100,40 l30,-40 l-30,-40 l100,40 z',
     stroke: '#00007f',

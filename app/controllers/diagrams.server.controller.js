@@ -15,15 +15,16 @@ var svgBuilder = require('../lib/svg-builder/svg-builder');
  *
  */
 exports.graph = function(req, res) {
-  var diagram = {}; // TODO: lookup Diagram by ID
+  var diagram = req.diagram;
+
+  // TODO: Remove this test data
   diagram = require('../lib/svg-builder/test.json');
-  var svg = svgBuilder(diagram);
 
   res.set({
     'Content-Type': 'image/svg+xml',
     'X-Frame-Options': 'SAMEORIGIN'
   });
-  res.send(svg);
+  res.send(svgBuilder(diagram));
 };
 
 /**
