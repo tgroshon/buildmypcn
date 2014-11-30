@@ -31,7 +31,7 @@ module.exports = function(root, diagramTitle, layoutTree) {
   };
 
   root.ele('text', titleAttrs, diagramTitle);
-  root.ele('text', providerAttrs, layoutTree.provider);
-  root.ele('text', consumerAttrs, layoutTree.consumer);
+  root.ele('text', providerAttrs, layoutTree.provider.title);
+  root.ele('text', consumerAttrs, layoutTree.consumer.title);
 }
 
