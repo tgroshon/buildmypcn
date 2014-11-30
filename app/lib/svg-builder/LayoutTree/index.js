@@ -11,7 +11,7 @@ function LayoutTree(pcn) {
   this.provider = pcn.domains[0];
   this.consumer = pcn.domains[1];
   this.region = [[],[],[],[],[],[],[]];
-  this.nodeStore = Object.create(null);
+  this.nodeStore = {};
   this.length = 0;
 
   pcn.steps.forEach(function(step) {
@@ -38,14 +38,10 @@ LayoutTree.prototype.maxRows = function () {
 };
 
 LayoutTree.prototype.getBottomY = function() {
-  var self = this;
-  var yArray = Object.keys(self.nodeStore).map(function(id) {
-    return self.nodeStore[id].y;
-  });
+  var yArray = Object.keys(this.nodeStore).map(function(id) {
+    return this.nodeStore[id].y;
+  }.bind(this));
   return Math.max.apply(null, yArray) + constants.STEP_HEIGHT + constants.ROW_SPACE
 };
-
-
-
 
 module.exports = LayoutTree;

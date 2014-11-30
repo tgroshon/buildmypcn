@@ -38,13 +38,6 @@ describe('Diagram Model Unit Tests:', function() {
 	});
 
 	describe('Method Save', function() {
-		it('should be able to save without problems', function(done) {
-			return diagram.save(function(err) {
-				should.not.exist(err);
-				done();
-			});
-		});
-
 		it('should be able to show an error when try to save without name', function(done) { 
 			diagram.name = '';
 
