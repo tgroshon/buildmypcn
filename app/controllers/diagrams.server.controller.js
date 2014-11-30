@@ -9,7 +9,7 @@ var mongoose = require('mongoose'),
 	Group = mongoose.model('Group'),
 	_ = require('lodash');
 
-var svgBuilder = require('../lib/svg-builder/svg-builder');
+var svgBuilder = require('../lib/svg-builder');
 
 /**
  *

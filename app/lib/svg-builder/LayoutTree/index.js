@@ -1,7 +1,10 @@
 'use strict';
 
-var helpers = require('./helpers');
+var helpers = require('../helpers');
+var constants = require('../constants');
 var LayoutNode = require('./LayoutNode');
+var mutateInitialLayout = require('./mutations/mutate-initial-layout');
+var mutateAdjustLayoutForRelations = require('./mutations/mutate-adjust-layout-for-relations');
 
 function LayoutTree(pcn) {
   this.raw = pcn;
@@ -14,15 +17,18 @@ function LayoutTree(pcn) {
   pcn.steps.forEach(function(step) {
     var region = helpers.lookupRegion(step, this.provider, this.consumer);
     var node = new LayoutNode(step, region);
-    this.addNode(node, region);
+    this.addNode(node);
   }.bind(this));
+
+  mutateInitialLayout(this);
+  mutateAdjustLayoutForRelations(this);
 }
 
-LayoutTree.prototype.addNode = function (node, region) {
+LayoutTree.prototype.addNode = function (node) {
   this.nodeStore[node.id] = node;
   this.length += 1;
 
-  var column = this.region[region];
+  var column = this.region[node.region];
   node.row = column.length;
   column.push(node);
 };
@@ -36,7 +42,10 @@ LayoutTree.prototype.getBottomY = function() {
   var yArray = Object.keys(self.nodeStore).map(function(id) {
     return self.nodeStore[id].y;
   });
-  return Math.max.apply(null, yArray);
+  return Math.max.apply(null, yArray) + constants.STEP_HEIGHT + constants.ROW_SPACE
 };
+
+
+
 
 module.exports = LayoutTree;

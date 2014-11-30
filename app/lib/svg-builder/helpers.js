@@ -69,9 +69,18 @@ function relationIsRightToLeftBetween(startNode, endNode) {
   return startNode.region > endNode.region && startNode.region !== endNode.region;
 }
 
+function relationTypeIsDashed(lineType) {
+  return lineType.indexOf('loose') >= 0;
+}
+
 exports.genConnectorAttrs = function genConnectorAttrs(startNode, endNode, lineType) {
-  var attrs = {'stroke': 'black', 'stroke-width': '2'};
-  if (lineType.indexOf('normal') >= 0) {
+  var attrs = {
+    'stroke': 'black',
+    'stroke-width': '1.5',
+    'marker-end': 'url(#markerArrow)'
+  };
+
+  if (relationTypeIsDashed(lineType)) {
     attrs['stroke-dasharray'] = '5,5';
   }
 
@@ -92,7 +101,30 @@ exports.genConnectorAttrs = function genConnectorAttrs(startNode, endNode, lineT
     attrs.y2 = endNode.y;
   }
 
-  attrs['marker-end'] = 'url(#markerArrow)';
   return attrs;
 };
 
+exports.genBackgroundAttrs = function genBackgroundAttrs(bottom) {
+  var attrs =  {
+    'stroke-width': 2,
+    'stroke': '#428bca',
+    'fill': 'none',
+  }
+  var guidelineHeight = bottom - 200;
+  var prefix = 'm0,0 l630,120 l630,-120 m0,120 l-1260,0';
+  var postfix = 'm180,0 l0,' + guidelineHeight +
+    'm180,0 l0,-' + guidelineHeight +
+    'm540,0 l0,' + guidelineHeight + 
+    'm180,0 l0,-' + guidelineHeight;
+
+  attrs['d'] = prefix + ' ' + postfix;
+  return attrs
+}
+
+exports.genStepTitleAttrs = function genStepTitleAttrs(node) {
+  return {x: node.x + constants.TEXT_X_OFFSET, y: node.y + constants.TEXT_Y_OFFSET}
+}
+
+exports.truncateTitle = function truncateTitle(title) {
+  return title.length > 20 ? title.substring(0, 20) + '...' : title;
+}
