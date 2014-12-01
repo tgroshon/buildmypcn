@@ -102,6 +102,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 		$scope.authentication = Authentication;
 	}
 ]);
+
 'use strict';
 
 //Menu service used for managing  menus
@@ -309,320 +310,173 @@ angular.module('diagrams').config(['$stateProvider',
 
 // Diagrams controller
 angular.module('diagrams').controller('DiagramsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Diagrams', 'Groups', 'PCN',
-	function($scope, $stateParams, $location, Authentication, Diagrams, Groups, PCN) {
-		$scope.authentication = Authentication;
-		Groups.query().$promise.then(function(groups) {
-			if (groups.length > 0) {
-				$scope.selectedGroup = groups[0];
-			}
-			$scope.groups = groups;
-		});
-		$scope.stepTypes = [
-			{'name': 'process', 'displayedName': 'Process'},
-			{'name': 'decision', 'displayedName': 'Decision'},
-			{'name': 'wait', 'displayedName': 'Wait'},
-			{'name': 'divergent_process', 'displayedName': 'Divergent Process'}
-		];
-		$scope.valueSpecificOptions = [-3, -2, -1, 0, 1, 2, 3];
-		$scope.valueGenericOptions = [-3, -2, -1, 0, 1, 2, 3];
+    function ($scope, $stateParams, $location, Authentication, Diagrams, Groups, PCN) {
 
-		// Create a new, blank PCN object
-		$scope.pcn = PCN.initPCN('', '', '');
-		$scope.pcn.domains = [PCN.initDomain('', 'Provider'), PCN.initDomain('', 'Customer')];
-		$scope.pcn.steps = [PCN.initStep($scope.pcn.domains[0], '', '', null)];
+        $scope.authentication = Authentication;
 
-		$scope.addDomain = function() {
-			$scope.pcn.domains.push(PCN.initDomain('', ''));
-		};
-		$scope.addStep = function() {
-			$scope.pcn.steps.push(PCN.initStep($scope.pcn.domains[0], '', '', null));
-		};
+        Groups.query().$promise.then(function (groups) {
+            if (groups.length > 0) {
+                $scope.selectedGroup = groups[0];
+            }
+            $scope.groups = groups;
+        });
 
-		// Create new Diagram
-		$scope.create = function() {
-			// Create new Diagram object
-			var diagram = new Diagrams ({
-        title: this.pcn.metadata.title,
-        group: this.selectedGroup._id,
-				description: this.pcn.metadata.description,
-				domains: this.pcn.domains,
-				steps: this.pcn.steps
-			});
+        $scope.stepTypes = [
+            {'name': 'process', 'displayedName': 'Process'},
+            {'name': 'decision', 'displayedName': 'Decision'},
+            {'name': 'wait', 'displayedName': 'Wait'},
+            {'name': 'divergent_process', 'displayedName': 'Divergent Process'}
+        ];
 
-			// Redirect after save
-			diagram.$save(function(response) {
-				$location.path('diagrams/' + response._id);
+        $scope.predecessorTypes = [
+            {'name': 'normal_relationship', 'displayName': 'Normal'},
+            {'name': 'loose_temporal_relationship', 'displayName': 'Loose Temporal'}
+        ];
 
-				// Clear form fields
-				$scope.title = '';
-				$scope.description = '';
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
+        $scope.valueSpecificOptions = [-3, -2, -1, 0, 1, 2, 3];
+        $scope.valueGenericOptions = [-3, -2, -1, 0, 1, 2, 3];
 
-		// Remove existing Diagram
-		$scope.remove = function( diagram ) {
-			if ( diagram ) { diagram.$remove();
+        // Create a new, blank PCN object
+        $scope.diagram = PCN.initPCN('', '', '');
+        $scope.diagram.domains = [PCN.initDomain('', 'Provider'), PCN.initDomain('', 'Customer')];
+        $scope.diagram.steps = [PCN.initStep($scope.diagram.domains[0], '', '', null)];
 
-				for (var i in $scope.diagrams ) {
-					if ($scope.diagrams [i] === diagram ) {
-						$scope.diagrams.splice(i, 1);
-					}
-				}
-			} else {
-				$scope.diagram.$remove(function() {
-					$location.path('diagrams');
-				});
-			}
-		};
+        $scope.addDomain = function () {
+            $scope.diagram.domains.push(PCN.initDomain('', ''));
+        };
 
-		// Update existing Diagram
-		$scope.update = function() {
-			var diagram = $scope.pcn;
+        $scope.addStep = function () {
+            $scope.diagram.steps.push(PCN.initStep($scope.diagram.domains[0], '', '', null));
+            setPredecessors($scope.diagram);
+        };
+
+        $scope.deleteStep = function (index) {
+            $scope.diagram.steps.splice(index, 1);
+            setPredecessors($scope.diagram);
+        };
+
+        // Create new Diagram
+        $scope.create = function () {
+            // Create new Diagram object
+            var diagram = new Diagrams({
+                title: this.diagram.metadata.title,
+                group: this.selectedGroup._id,
+                description: this.diagram.metadata.description,
+                domains: this.diagram.domains,
+                steps: this.diagram.steps
+            });
+
+            // Redirect after save
+            diagram.$save(function (response) {
+                $location.path('diagrams/' + response._id);
+
+                // Clear form fields
+                $scope.title = '';
+                $scope.description = '';
+            }, function (errorResponse) {
+                $scope.error = errorResponse.data.message;
+            });
+        };
+
+        // Remove existing Diagram
+        $scope.remove = function (diagram) {
+            if (diagram) {
+                diagram.$remove();
+
+                for (var i in $scope.diagrams) {
+                    if ($scope.diagrams [i] === diagram) {
+                        $scope.diagrams.splice(i, 1);
+                    }
+                }
+            } else {
+                $scope.diagram.$remove(function () {
+                    $location.path('diagrams');
+                });
+            }
+        };
+
+        // Update existing Diagram
+        $scope.update = function () {
+            var diagram = $scope.diagram;
+
+            setPredecessors(diagram);
+
             diagram.group = $scope.selectedGroup;
-			diagram.$update(function() {
-				$location.path('diagrams/' + diagram._id);
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
+            diagram.$update(function () {
+                $location.path('diagrams/' + diagram._id);
+            }, function (errorResponse) {
+                $scope.error = errorResponse.data.message;
+            });
+        };
 
-    $scope.setEditedGroup = function() {
-      $scope.setEditedGroup = $scope.diagram.group;
-    };
+        function setPredecessors(diagram) {
+            for (var i = 1; i < diagram.steps.length; i++) {
+                var step = diagram.steps[i];
+                var previousStep = diagram.steps[i - 1];
+                step.predecessors = [PCN.initPredecessor(previousStep.id, $scope.predecessorTypes[0].displayName, previousStep.title)];
+            }
+        }
 
-		// Find a list of Diagrams
-		$scope.find = function() {
-			$scope.diagrams = Diagrams.query();
-		};
+        $scope.setEditedGroup = function () {
+            $scope.setEditedGroup = $scope.diagram.group;
+        };
 
-		// Find existing Diagram
-		$scope.findOne = function() {
-			$scope.groups = Groups.query();
-			var promise = Diagrams.get({
-				diagramId: $stateParams.diagramId
-			});
+        // Find a list of Diagrams
+        $scope.find = function () {
+            $scope.diagrams = Diagrams.query();
+        };
 
-      promise.$promise.then(function(diagram) {
-         $scope.diagram = diagram;
-         $scope.selectedGroup = null;
+        // Find existing Diagram
+        $scope.findOne = function () {
+            $scope.groups = Groups.query();
+            var promise = Diagrams.get({
+                diagramId: $stateParams.diagramId
+            });
 
-         for (var i = 0; i < $scope.groups.length; i++) {
-           if ($scope.groups[i]._id === $scope.diagram.group._id) {
-             $scope.selectedGroup = $scope.groups[i];
-             break;
-           }
-         }
-      });
-		};
-	}
+            promise.$promise.then(function (diagram) {
+                $scope.diagram = diagram;
+                $scope.selectedGroup = null;
+                
+                var i;
+
+                for (i = 0; i < $scope.groups.length; i++) {
+                    if ($scope.groups[i]._id === $scope.diagram.group._id) {
+                        $scope.selectedGroup = $scope.groups[i];
+                        break;
+                    }
+                }
+
+                for (i = 0; i < $scope.diagram.steps.length; i++) {
+                    var step = $scope.diagram.steps[i];
+                    for (var j = 0; j < $scope.diagram.domains.length; j++) {
+                        if (step.domain.id === $scope.diagram.domains[j].id) {
+                            step.domain = $scope.diagram.domains[j];
+                            break;
+                        }
+                    }
+                }
+            });
+        };
+    }
 ]);
 
+/*global $ */
 'use strict';
 
 //Diagrams service used to communicate Diagrams REST endpoints
-angular.module('diagrams').directive('grapher', ['$parse', '$document',
-  function($parse, $document) {
+angular.module('diagrams').directive('pcnGrapher', [
+  function() {
     return {
       restrict: 'E',
       replace: true,
-      templateUrl: 'modules/diagrams/views/grapher.client.view.html',
+      template: '<object data="/diagrams/{{diagram._id}}/graph" type="image/svg+xml"></object>',
       scope: {
         diagram: '=pcn'
-      },
-      compile: function(tElement, tAttrs) {
-        // Process the PCN Data
-
-        return function preLink(scope, element, attrs) {
-          var text = createElement('text', {
-            fontSize: 22,
-            y: 180,
-            x: 100
-          });
-          text.textContent = 'Welcome to the Jungle';
-          console.log(text);
-
-          var container = element.find('g.js__grapher-step-container');
-          container.append(text);
-        };
       }
     };
   }
 ]);
 
-function createElement(name, attrs) {
-  var element = document.createElementNS('http://www.w3.org/2000/svg', name);
-  Object.keys(attrs).forEach(function (key) {
-    element.setAttributeNS(null, 
-                           key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase(),
-                           attrs[key].toString());
-  });
-  return element;
-}
-
-// function grapherBFG(container, steps) {
-//   var regions = {
-//     'provider-independent' : 1,
-//     'provider-surrogate' : 2,
-//     'provider-direct' : 3,
-//     'both-direct' : 3.5,
-//     'customer-direct' : 4,
-//     'customer-surrogate' : 5,
-//     'customer-independent' : 6,
-//     'r1' : 1,
-//     'r2' : 2,
-//     'r3' : 3,
-//     'r4' : 3.5,
-//     'r5' : 4,
-//     'r6' : 5,
-//     'r7' : 6
-//   };
-//   var TOP_HEIGHT = 120;
-//   var REGION_WIDTH = 180;
-//   var x1 = 0; //coordinates of last step
-//   var y1 = TOP_HEIGHT + 25 - 60; //step 0 is 100 up
-//   var last_step_number = 999; //should not use 999
-//   var step_box = null; //always delays steps for layers over lines
-//  
-//   steps.forEach(function (step, index) {
-//     step.number = index + 1; //set number
-//     step.diagram = {};
-//  
-//     var x = 1;
-//     if (step.region && regions[step.region] > 0) {
-//       x = (regions[step.region] - 1) * REGION_WIDTH + 10;
-//     } else {
-//       x = 1;
-//     }
-//  
-//     var follows = step.follows;
-//     var y = y1 + 100;
-//  
-//     if (!follows) {
-//       y = y1 + 60;
-//     } else if (follows == 0 || follows == "start") {
-//       y = TOP_HEIGHT + 25;
-//     } else if (follows && follows > 0 && steps[follows] && steps[follows].diagram.y) {
-//       y = steps[follows].diagram.y + 100;
-//     } else {
-//       y = y1 + 60;
-//     }
-// 
-//     step.diagram.y = y; //save it so can use later
-//  
-//     //CONNECTOR LINE
-//     var x2 = x + 90; //coordinates of end point
-//     var y2 = y + 40;
-//     if (follows == 0 || follows == "start") {
-//       console.log('First Step ... no connector line');
-//     } else {
-//       if (x1 > 0) {
-//         var x1a = (x1 * 1 + x2 * 1) / 2;
-//         var y1a = (y1 * 1 + y2 * 1) / 2;
-//  
-//         var marker = "markerArrow";
-//         var follows = step.follows || '';
-//         if (/yes/.test(follows)) {
-//           marker = 'markerYes';
-//         } else if (/no/.test(follows)) {
-//           marker = 'markerNo';
-//         }
-//         container.append('<polyline stroke="#00007f" marker-mid="url(#' + marker + ')" id="svg_line' + step.number + '" fill="none" stroke-width="2" points="' + x1 + ' ' + y1 + ' ' + x1a + ' ' + y1a + ' ' + x2 + ' ' + y2 + '" se:connector="svg_' + last_step_number + ' svg_' + step.number + '" />');
-//       }
-//     }
-//     x1 = x2;
-//     y1 = y2;
-//     last_step_number = step.number; //in case we wind up skipping a step
-//  
-//     //STEP BOX
-//     if (step_box)
-//       container.append(step_box);
-//  
-//     var stroke_width = 2;
-//     if (step.box_thick)
-//       stroke_width = 4;
-//     var stroke_dash = 'null';
-//     if (step.box_dash)
-//       stroke_dash = '5,5';
-//  
-//     //new step box
-//     step_box = $('<g></g>'); //always delays steps for layers over lines
-//     if (step.type == "wait") {
-//       step_box.append('<path id="svg_' + step.number + '" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="' + stroke_dash + '" stroke-width="' + stroke_width + '" stroke="#00007f" fill="#fffff0" d="m' + x + ',' + y +
-//         ' m-5,0 l170,0 l-10,60 l-150,0 z" />');
-//     } else if (step.type == "decision") {
-//       step_box.append('<path id="svg_' + step.number + '" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="' + stroke_dash + '" stroke-width="' + stroke_width + '" stroke="#00007f" fill="#fffff0" d="m' + x + ',' + y +
-//         ' m10,0 l140,0 l10,10 l0,40 l-10,10 l-140,0 l-10,-10 l0,-40 z" />');
-//     } else {
-//       step_box.append('<rect id="svg_' + step.number + '" height="60" width="' + (REGION_WIDTH - 20) + '" y="' + y + '" x="' + x + '" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="' + stroke_dash + '" stroke-width="' + stroke_width + '" stroke="#00007f" fill="#fffff0" />');
-//     }
-//  
-//     var textx = x * 1 + 5;
-//     var texty = y * 1 + 5 + 10;
-//     step_box.append(textWrapSVG(step.step, textx, texty, REGION_WIDTH - 30));
-//  
-//     container.append(step_box); //append the last step box
-//   });
-//  
-//  
-//   return container;
-// };
-// 
-// // <svg height="20" width="1000" xmlns="http://www.w3.org/2000/svg" id='textMeasurer'>
-// //   <text font-size="large" style="fill:yellow;" x="0" y="18"><tspan id="debugtspan">text</tspan></text>
-// // </svg>
-// 
-// function textWrapSVG(text, textx, texty, width) { 
-//   //returns boundary constrained SVG text jQuery object
-//   var textObject = $('<text font-family="Serif" font-size="large" fill="#ff0000" text-anchor="left" x="'+textx+'" y="'+texty+'" width="'+width+'" height="80"></text>');
-//  
-//   var allwords = text.split(' ');
-//   allwords.push('~DUMMY~'); //dummy marker to show the end - simplifies
-//   var nextword = allwords.shift();
-//   var nextwordlen = nextword.length;
-//   var line = nextword;  //grab the first word
-//   var tspan_element = document.getElementById('debugtspan');
-//   tspan_element.innerHTML = line;
-//   var dx = 0;
-//   var linecount = 0;
-//  
-//   for(var i=0; i < allwords.length; i++) {
-//       nextword = allwords[i];
-//       nextwordlen = nextword.length;
-//       
-//       var len = tspan_element.innerHTML.length;
-//       tspan_element.innerHTML = line + " " + nextword;
-//       if (tspan_element.getComputedTextLength() > width || nextword == '~DUMMY~') {
-//         tspan_element.innerHTML = line;
-//         linewidth = tspan_element.getComputedTextLength();
-//         linehalf = -Math.round(linewidth/2);
-//         if (dx == 0) { //first line
-//           textObject.append(('<tspan dx="'+(width/2+linehalf)+'">'+line+'</tspan>')); //tack it on
-//         } else {
-//           dx += linehalf; //subtract half of the current line
-//           textObject.append(('<tspan dx="'+dx+'" dy="20">'+line+'</tspan>')); //tack it on
-//         }
-//         dx = linehalf;
-//           tspan_element.innerHTML = nextword;    // use leftover word
-//           line = nextword;  //start next line
-//         linecount ++;
-//       } else {
-//         line += ' ' + nextword;
-//       }
-//   }
-//   textObject.attr('y', texty + 30 - (linecount * 10));
-//  
-//   return textObject;
-// }
-//  
-// $.fn.xml = function() {
-//     return (new XMLSerializer()).serializeToString(this[0]);
-// };
-//  
-// $.fn.DOMRefresh = function() {
-//     return $($(this.xml()).replaceAll(this));
-// };
 
 'use strict';
 
@@ -656,6 +510,19 @@ angular.module('diagrams').factory('Diagrams', ['$resource',
 angular.module('diagrams').factory('PCN', ['uuid',
 	function (uuid) {
 		return {
+      CONSTANTS: {
+        'PREDECESSOR_TYPES': {
+          NORMAL: 'normal_relationship',
+          LOOSE: 'loose_temporal_relationship'
+        },
+        'CONNECTOR': {
+          INDEPENDENT: '',
+          SURROGATE: '',
+          'DIRECT_LEADING': 'direct_leading',
+          'DIRECT_SHARED': 'direct_shared'
+        }
+      },
+
       initPCN: function (title, description, author) {
         return {
           'metadata': {
@@ -665,7 +532,7 @@ angular.module('diagrams').factory('PCN', ['uuid',
           },
           'domains':[],
           'steps':[]
-	};
+        };
       },
 
       initStep: function (domain, title, type, relatedDomain) {
@@ -687,7 +554,7 @@ angular.module('diagrams').factory('PCN', ['uuid',
             },
           },
           'problems': []
-		};
+        };
 
         if (relatedDomain)
           step.domain.region.with_domain = relatedDomain.id;
@@ -695,12 +562,33 @@ angular.module('diagrams').factory('PCN', ['uuid',
         return step;
       },
 
+      initPredecessor: function (id, type, title) {
+        return {
+          'id': id,
+          'type': type,
+          'title': title 
+        };
+      },
+
+      initStepDomain: function (owner, type, related) {
+        if (!owner) owner = {};
+        if (!related) related = {};
+
+        return {
+          id: owner.id,
+          region: {
+            type: type,
+            'with_domain': related.id 
+          }
+        };
+      },
+
       initDomain: function (title, subtitle) {
         return {
           'id': uuid.generate(),
           'title': title,
           'subtitle': subtitle
-		};
+        };
       }
     };
   }
