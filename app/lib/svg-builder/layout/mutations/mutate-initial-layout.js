@@ -9,4 +9,4 @@ module.exports = function mutateInitialLayout(layoutGraph) {
       node.x = regionNum * constants.REGION_WIDTH + constants.REGION_OFFSET;
     });
   });
-}
+};

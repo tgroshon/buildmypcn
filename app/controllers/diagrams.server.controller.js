@@ -18,7 +18,7 @@ exports.graph = function(req, res) {
   var diagram = req.diagram;
 
   // TODO: Remove this test data
-  diagram = require('../fixtures/pcn.json');
+  diagram = require('../fixtures/cold-stone.json');
 
   res.set({
     'Content-Type': 'image/svg+xml',

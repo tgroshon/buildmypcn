@@ -1,0 +1,439 @@
+{
+  "metadata":
+  {
+    "title": "Cold Stone",
+    "description": "This PCN represents the different interactions between Cold Stone and a customer.",
+    "author": "Ryan Craig"
+  },
+
+  "domains":
+  [
+    {
+      "id": "guid_provider_domain",
+      "title": "Cold Stone",
+      "subtitle": "Provider"
+    },
+
+    {
+      "id": "guid_customer_domain",
+      "title": "Customer",
+      "subtitle": "Customer"
+    }
+  ],
+
+  "steps":
+  [
+    {
+      "id": "guid_step_1",
+      "title": "travel to Cold Stone",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 0,
+      "value_generic": 0,
+      "predecessors": [],
+      "domain":
+      {
+        "id": "guid_customer_domain",
+        "region":
+        {
+          "type": "independent",
+          "with_domain": ""
+        }
+      },
+
+      "problems": []
+    },
+    {
+      "id": "guid_step_1_1",
+      "title": "Look at menu",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 1,
+      "value_generic": 0,
+      "predecessors": [
+        {
+          "id": "guid_step_1",
+          "type": "normal_relationship"
+        }
+      ],
+      "domain":
+      {
+        "id": "guid_customer_domain",
+        "region":
+        {
+          "type": "surrogate",
+          "with_domain": "guid_provider_domain"
+        }
+      },
+
+      "problems": []
+    },
+    {
+      "id": "guid_step_2",
+      "title": "Wait in line",
+      "type": "wait",
+      "emphasized": false,
+      "value_specific": 0,
+      "value_generic": -1,
+      "predecessors":
+      [
+        {
+          "id": "guid_step_1_1",
+          "type": "normal_relationship",
+          "title": ""
+        }
+      ],
+      "domain":
+      {
+        "id": "guid_customer_domain",
+        "region":
+        {
+          "type": "surrogate",
+          "with_domain": "guid_provider_domain"
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "guid_step_3",
+      "title": "Order ice cream",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 0,
+      "value_generic": 0,
+      "predecessors":
+      [
+        {
+          "id": "guid_step_2",
+          "type": "normal_relationship",
+          "title": ""
+        }
+      ],
+      "domain":
+      {
+        "id": "guid_provider_domain",
+        "region":
+        {
+          "type": "direct_shared",
+          "with_domain": "guid_customer_domain"
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "guid_step_4",
+      "title": "Make ice cream in view of customer",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 1,
+      "value_generic": 0,
+      "predecessors":
+      [
+        {
+          "id": "guid_step_3",
+          "type": "normal_relationship",
+          "title": ""
+        }
+      ],
+      "domain":
+      {
+        "id": "guid_provider_domain",
+        "region":
+        {
+          "type": "surrogate",
+          "with_domain": "guid_customer_domain"
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "guid_step_5",
+      "title": "Ask cup or cone",
+      "type": "decision",
+      "emphasized": false,
+      "value_specific": 0,
+      "value_generic": 0,
+      "predecessors":
+      [
+        {
+          "id": "guid_step_4",
+          "type": "normal_relationship",
+          "title": ""
+        }
+      ],
+      "domain":
+      {
+        "id": "guid_provider_domain",
+        "region":
+        {
+          "type": "direct_shared",
+          "with_domain": "guid_customer_domain"
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "guid_step_6a",
+      "title": "Place in cone",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 0,
+      "value_generic": 0,
+      "predecessors":
+      [
+        {
+          "id": "guid_step_5",
+          "type": "normal_relationship",
+          "title": "cone"
+        }
+      ],
+      "domain":
+      {
+        "id": "guid_provider_domain",
+        "region":
+        {
+          "type": "surrogate",
+          "with_domain": "guid_customer_domain"
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "guid_step_7b",
+      "title": "Place in cup",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 0,
+      "value_generic": 0,
+      "predecessors":
+      [
+        {
+          "id": "guid_step_6a",
+          "type": "normal_relationship",
+          "title": "cup"
+        }
+      ],
+      "domain":
+      {
+        "id": "guid_provider_domain",
+        "region":
+        {
+          "type": "surrogate",
+          "with_domain": "guid_customer_domain"
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "guid_step_8",
+      "title": "Wait to Checkout",
+      "type": "wait",
+      "emphasized": false,
+      "value_specific": -1,
+      "value_generic": 0,
+      "predecessors": 
+      [
+        {
+          "id": "guid_step_7b",
+          "type": "normal_relationship",
+          "title": ""
+        }
+      ],
+      "domain":
+      {
+        "id": "guid_customer_domain",
+        "region":
+        {
+          "type": "surrogate",
+          "with_domain": "guid_provider_domain"
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "guid_step_9a",
+      "title": "Pay for ice cream",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": -2,
+      "value_generic": 2,
+      "predecessors":
+      [
+        {
+          "id": "guid_step_8",
+          "type": "normal_relationship",
+          "title": ""
+        }
+      ],
+      "domain":
+      {
+        "id": "guid_provider_domain",
+        "region":
+        {
+          "type": "direct_shared",
+          "with_domain": "guid_customer_domain"
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "guid_step_9",
+      "title": "Eat in store?",
+      "type": "decision",
+      "emphasized": false,
+      "value_specific": 0,
+      "value_generic": 0,
+      "predecessors": 
+      [
+      	{
+          "id": "guid_step_9a",
+          "type": "normal_relationship",
+          "title": ""
+        }
+	  ],
+      "domain":
+      {
+        "id": "guid_customer_domain",
+        "region":
+        {
+          "type": "surrogate",
+          "with_domain": "guid_provider_domain"
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "guid_step_10a",
+      "title": "Eat in store",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 2,
+      "value_generic": 0,
+      "predecessors":
+      [
+        {
+          "id": "guid_step_9",
+          "type": "normal_relationship",
+          "title": "yes"
+        }
+      ],
+      "domain":
+      {
+        "id": "guid_customer_domain",
+        "region":
+        {
+          "type": "surrogate",
+          "with_domain": "guid_provider_domain"
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "guid_step_10b",
+      "title": "Take to car",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 0,
+      "value_generic": 0,
+      "predecessors":
+      [
+        {
+          "id": "guid_step_9",
+          "type": "normal_relationship",
+          "title": "no"
+        }
+      ],
+      "domain":
+      {
+        "id": "guid_customer_domain",
+        "region":
+        {
+          "type": "independent",
+          "with_domain": ""
+        }
+      },
+
+      "problems": []
+    },
+
+    {
+      "id": "guid_step_11",
+      "title": "drive_home",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 0,
+      "value_generic": 0,
+      "predecessors":
+      [
+        {
+          "id": "guid_step_10a",
+          "type": "normal_relationship",
+          "title": ""
+        },
+        {
+          "id": "guid_step_10b",
+          "type": "normal_relationship",
+          "title": ""
+        }
+      ],
+      "domain":
+      {
+        "id": "guid_customer_domain",
+        "region":
+        {
+          "type": "independent",
+          "with_domain": ""
+        }
+      },
+
+      "problems": []
+    },
+    {
+      "id": "guid_step_12",
+      "title": "Eat at home",
+      "type": "process",
+      "emphasized": false,
+      "value_specific": 2,
+      "value_generic": 0,
+      "predecessors":
+      [
+        {
+          "id": "guid_step_11",
+          "type": "normal_relationship",
+          "title": ""
+        }
+      ],
+      "domain":
+      {
+        "id": "guid_customer_domain",
+        "region":
+        {
+          "type": "independent",
+          "with_domain": ""
+        }
+      },
+
+      "problems": []
+    }
+  ]
+}

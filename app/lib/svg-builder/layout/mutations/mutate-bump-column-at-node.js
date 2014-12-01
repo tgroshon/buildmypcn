@@ -16,4 +16,4 @@ module.exports = function mutateBumpColumnAtNode(node, layoutGraph, startY) {
     column[i].y = prevY + constants.ROW_SPACE;
     prevY = column[i].y;
   }
-}
+};

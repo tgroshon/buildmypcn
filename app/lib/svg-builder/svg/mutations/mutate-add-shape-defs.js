@@ -34,4 +34,4 @@ module.exports = function mutateAddShapeDefs(root) {
   //       no
   //     </text>
   //   </marker>
-}
+};
