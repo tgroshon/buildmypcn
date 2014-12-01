@@ -14,6 +14,7 @@ module.exports = function mutateAdjustLayoutForRelations(layoutGraph) {
         node = region[row]; 
         node.predecessors.forEach(function(relation) {
           preNode = layoutGraph.nodeStore[relation.id];
+          if (!preNode) { console.log('\n\n', relation.id, Object.keys(layoutGraph.nodeStore))}
           if (preNode.y >= node.y) {
             mutateBumpColumnAtNode(node, layoutGraph, preNode.y);
           }
