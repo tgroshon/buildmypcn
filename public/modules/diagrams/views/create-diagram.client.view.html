@@ -1,6 +1,6 @@
 <section data-ng-controller="DiagramsController">
     <div class="page-header">
-        <h1>New Diagram</h1>
+        <h1>{{ diagram.metadata.title || "New Diagram" }}</h1>
     </div>
     <div data-ng-show="groups.length < 1" class="alert alert-danger"> <!-- ng-show instead of ng-hide so we don't get a flash before the groups load -->
         Unfortunately you aren't a member of any groups. <a href="/#!/groups/create">Create a group</a> before trying to create a diagram.

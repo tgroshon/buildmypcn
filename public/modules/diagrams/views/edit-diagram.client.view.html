@@ -1,6 +1,6 @@
 <section data-ng-controller="DiagramsController" data-ng-init="findOne()">
     <div class="page-header">
-        <h1>Edit Diagram</h1>
+        <h1>Edit {{ diagram.title ? '"' + diagram.title + '"' : "" }}</h1>
     </div>
     <div class="col-md-12">
         <form class="form-horizontal" data-ng-submit="update()" novalidate>
