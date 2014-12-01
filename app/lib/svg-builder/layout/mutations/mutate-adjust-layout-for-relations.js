@@ -2,19 +2,19 @@
 
 var mutateBumpColumnAtNode = require('./mutate-bump-column-at-node');
 
-module.exports = function mutateAdjustLayoutForRelations(layoutTree) {
+module.exports = function mutateAdjustLayoutForRelations(layoutGraph) {
   var node, preNode, region;
-  var maxRows = layoutTree.maxRows();
+  var maxRows = layoutGraph.maxRows();
 
   for (var row = 0; row < maxRows; row++) {
-    for (var col = 0; col < layoutTree.region.length; col++) {
-      region = layoutTree.region[col];
+    for (var col = 0; col < layoutGraph.region.length; col++) {
+      region = layoutGraph.region[col];
       if (row < region.length) {
         node = region[row]; 
         node.predecessors.forEach(function(relation) {
-          preNode = layoutTree.nodeStore[relation.id];
+          preNode = layoutGraph.nodeStore[relation.id];
           if (preNode.y >= node.y) {
-            mutateBumpColumnAtNode(node, layoutTree, preNode.y);
+            mutateBumpColumnAtNode(node, layoutGraph, preNode.y);
           }
         });
       }

@@ -6,7 +6,7 @@ var LayoutNode = require('./LayoutNode');
 var mutateInitialLayout = require('./mutations/mutate-initial-layout');
 var mutateAdjustLayoutForRelations = require('./mutations/mutate-adjust-layout-for-relations');
 
-function LayoutTree(pcn) {
+function LayoutGraph(pcn) {
   this.raw = pcn;
   this.provider = pcn.domains[0];
   this.consumer = pcn.domains[1];
@@ -24,7 +24,7 @@ function LayoutTree(pcn) {
   mutateAdjustLayoutForRelations(this);
 }
 
-LayoutTree.prototype.addNode = function (node) {
+LayoutGraph.prototype.addNode = function (node) {
   this.nodeStore[node.id] = node;
   this.length += 1;
 
@@ -33,15 +33,15 @@ LayoutTree.prototype.addNode = function (node) {
   column.push(node);
 };
 
-LayoutTree.prototype.maxRows = function () {
+LayoutGraph.prototype.maxRows = function () {
   return Math.max.apply(null, this.region.map(function (reg) { return reg.length; }));
 };
 
-LayoutTree.prototype.getBottomY = function() {
+LayoutGraph.prototype.getBottomY = function() {
   var yArray = Object.keys(this.nodeStore).map(function(id) {
     return this.nodeStore[id].y;
   }.bind(this));
   return Math.max.apply(null, yArray) + constants.STEP_HEIGHT + constants.ROW_SPACE
 };
 
-module.exports = LayoutTree;
+module.exports = LayoutGraph;

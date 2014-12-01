@@ -1,11 +1,11 @@
 'use strict';
 
-var LayoutTree = require('./LayoutTree');
+var LayoutGraph = require('./layout/LayoutGraph');
 var svgBuilder = require('./svg/builder');
 
 module.exports = function(pcn) {
-  var layoutTree = new LayoutTree(pcn);
-  var root = svgBuilder(pcn.metadata.title, layoutTree);
+  var layoutGraph = new LayoutGraph(pcn);
+  var root = svgBuilder(pcn.metadata.title, layoutGraph);
 
   return root.toString();
 };

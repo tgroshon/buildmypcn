@@ -3,8 +3,8 @@
 var constants = require('../../constants');
 var helpers = require('../../helpers');
 
-module.exports = function(root, diagramTitle, layoutTree) {
-  var bottom = layoutTree.getBottomY();
+module.exports = function(root, diagramTitle, layoutGraph) {
+  var bottom = layoutGraph.getBottomY();
   root.att('viewBox', '0 0 ' + constants.DIAGRAM_WIDTH + ' ' + bottom);
 
   var backgroundGroup = root.ele('g', {class: 'grapher-background-container'});
@@ -31,7 +31,7 @@ module.exports = function(root, diagramTitle, layoutTree) {
   };
 
   root.ele('text', titleAttrs, diagramTitle);
-  root.ele('text', providerAttrs, layoutTree.provider.title);
-  root.ele('text', consumerAttrs, layoutTree.consumer.title);
+  root.ele('text', providerAttrs, layoutGraph.provider.title);
+  root.ele('text', consumerAttrs, layoutGraph.consumer.title);
 }
 

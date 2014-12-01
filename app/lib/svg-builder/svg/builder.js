@@ -6,7 +6,7 @@ var mutateAddShapeDefs = require('./mutations/mutate-add-shape-defs');
 var mutateAddBackground = require('./mutations/mutate-add-background');
 var mutateRenderTree = require('./mutations/mutate-render-tree');
 
-module.exports = function svgTemplate(diagramTitle, layoutTree) {
+module.exports = function svgTemplate(diagramTitle, layoutGraph) {
   var root = builder.create('svg',
                           {version: '1.0', encoding: 'UTF-8', standalone: true},
                           {pubID: null, sysID: null},
@@ -16,8 +16,8 @@ module.exports = function svgTemplate(diagramTitle, layoutTree) {
   root.ele('title', 'PCN Diagram');
 
   mutateAddShapeDefs(root);
-  mutateAddBackground(root, diagramTitle, layoutTree);
-  mutateRenderTree(root, layoutTree);
+  mutateAddBackground(root, diagramTitle, layoutGraph);
+  mutateRenderTree(root, layoutGraph);
 
   return root;
 }
