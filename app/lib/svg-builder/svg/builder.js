@@ -20,5 +20,5 @@ module.exports = function svgTemplate(diagramTitle, layoutGraph) {
   mutateRenderTree(root, layoutGraph);
 
   return root;
-}
+};
 

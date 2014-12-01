@@ -1,3 +1,4 @@
+/* jshint expr: true */
 'use strict';
 
 var should = require('should');
@@ -9,21 +10,21 @@ var constants = require('../../../../lib/svg-builder/constants');
 var spies = spyquire('../../../../lib/svg-builder/layout/LayoutGraph')
   .with('./mutations/mutate-initial-layout').nick('mutInit')
   .with('./mutations/mutate-adjust-layout-for-relations').nick('mutAdjust')
-  .with('../helpers', 'lookupRegion').nick('lookupRegion');
+  .with('./lookup-region').nick('lookupRegion');
 
 var LayoutGraph = spies.exec();
 
 describe('LayoutGraph Specs', function() {
   var pcn;
   var step = {
-    "id": "GUID_3456",
-    "title": "travel to restaurant",
-    "type": "process",
-    "domain": {
-      "id": "GUID_2345",
-      "region": {
-        "type": "independent",
-        "with_domain": ""
+    'id': 'GUID_3456',
+    'title': 'travel to restaurant',
+    'type': 'process',
+    'domain': {
+      'id': 'GUID_2345',
+      'region': {
+        'type': 'independent',
+        'with_domain': ''
       }
     }
   };
@@ -121,10 +122,10 @@ describe('LayoutGraph Specs', function() {
       it('gets bottom Y position', function() {
         var greatestY = 575;
         var graph = new LayoutGraph(pcn);
-        graph.nodeStore['fakeId1'] = {y: 10};
-        graph.nodeStore['fakeId2'] = {y: greatestY};
+        graph.nodeStore.fakeId1 = {y: 10};
+        graph.nodeStore.fakeId2 = {y: greatestY};
         graph.getBottomY().should.eql(greatestY + constants.STEP_HEIGHT + constants.ROW_SPACE);
       });
     });
   });
-})
+});

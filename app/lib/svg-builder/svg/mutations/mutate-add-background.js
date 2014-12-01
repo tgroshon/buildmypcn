@@ -1,7 +1,7 @@
 'use strict';
 
 var constants = require('../../constants');
-var helpers = require('../../helpers');
+var genBackgroundAttrs = require('../generators/generate-background-attrs');
 
 module.exports = function(root, diagramTitle, layoutGraph) {
   var bottom = layoutGraph.getBottomY();
@@ -9,32 +9,32 @@ module.exports = function(root, diagramTitle, layoutGraph) {
 
   var backgroundGroup = root.ele('g', {class: 'grapher-background-container'});
   backgroundGroup.ele('title', 'Background');
-  backgroundGroup.ele('path', helpers.genBackgroundAttrs(bottom));
+  backgroundGroup.ele('path', genBackgroundAttrs(bottom));
   
   var titleAttrs = {
     'x': constants.DIAGRAM_WIDTH / 2,
     'y': 50,
     'font-size': 24,
     'text-anchor': 'middle',
-    'font-family': "Verdana"
+    'font-family': 'Verdana'
   };
   var providerAttrs = {
     'x': constants.REGION_OFFSET,
     'y': 100,
     'font-size': 24,
     'text-anchor': 'start',
-    'font-family': "Verdana"
+    'font-family': 'Verdana'
   };
   var consumerAttrs = {
     'x': constants.DIAGRAM_WIDTH - constants.REGION_OFFSET,
     'y': 100,
     'font-size': 24,
     'text-anchor': 'end',
-    'font-family': "Verdana"
+    'font-family': 'Verdana'
   };
 
   root.ele('text', titleAttrs, diagramTitle);
   root.ele('text', providerAttrs, layoutGraph.provider.title);
   root.ele('text', consumerAttrs, layoutGraph.consumer.title);
-}
+};
 

@@ -1,3 +1,4 @@
+/* jshint loopfunc: true */
 'use strict';
 
 var mutateBumpColumnAtNode = require('./mutate-bump-column-at-node');
@@ -20,4 +21,4 @@ module.exports = function mutateAdjustLayoutForRelations(layoutGraph) {
       }
     }
   }
-}
+};

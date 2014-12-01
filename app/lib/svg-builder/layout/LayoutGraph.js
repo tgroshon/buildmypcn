@@ -1,8 +1,8 @@
 'use strict';
 
-var helpers = require('../helpers');
 var constants = require('../constants');
 var LayoutNode = require('./LayoutNode');
+var lookupRegion = require('./lookup-region');
 var mutateInitialLayout = require('./mutations/mutate-initial-layout');
 var mutateAdjustLayoutForRelations = require('./mutations/mutate-adjust-layout-for-relations');
 
@@ -15,7 +15,7 @@ function LayoutGraph(pcn) {
   this.length = 0;
 
   pcn.steps.forEach(function(step) {
-    var region = helpers.lookupRegion(step, this.provider, this.consumer);
+    var region = lookupRegion(step, this.provider, this.consumer);
     var node = new LayoutNode(step, region);
     this.addNode(node);
   }.bind(this));
@@ -41,7 +41,7 @@ LayoutGraph.prototype.getBottomY = function() {
   var yArray = Object.keys(this.nodeStore).map(function(id) {
     return this.nodeStore[id].y;
   }.bind(this));
-  return Math.max.apply(null, yArray) + constants.STEP_HEIGHT + constants.ROW_SPACE
+  return Math.max.apply(null, yArray) + constants.STEP_HEIGHT + constants.ROW_SPACE;
 };
 
 module.exports = LayoutGraph;
