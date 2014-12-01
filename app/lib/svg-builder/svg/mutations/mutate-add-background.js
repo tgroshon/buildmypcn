@@ -15,19 +15,22 @@ module.exports = function(root, diagramTitle, layoutGraph) {
     'x': constants.DIAGRAM_WIDTH / 2,
     'y': 50,
     'font-size': 24,
-    'text-anchor': 'middle'
+    'text-anchor': 'middle',
+    'font-family': "Verdana"
   };
   var providerAttrs = {
     'x': constants.REGION_OFFSET,
     'y': 100,
     'font-size': 24,
-    'text-anchor': 'start'
+    'text-anchor': 'start',
+    'font-family': "Verdana"
   };
   var consumerAttrs = {
     'x': constants.DIAGRAM_WIDTH - constants.REGION_OFFSET,
     'y': 100,
     'font-size': 24,
-    'text-anchor': 'end'
+    'text-anchor': 'end',
+    'font-family': "Verdana"
   };
 
   root.ele('text', titleAttrs, diagramTitle);

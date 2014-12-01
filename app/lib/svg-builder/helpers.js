@@ -29,8 +29,8 @@ exports.genStepConfig = function genStepConfig(node) {
       config.attrs = {
         title: node.title,
         d: 'm' + node.x + ',' + node.y + ' m-5,0 l170,0 l-10,60 l-150,0 z',
-        stroke: '#00007f',
-        fill: '#fffff0'
+        stroke: '#43A047',
+        fill: '#4CAF50'
       };
       config.name = 'path';
       return config;
@@ -39,8 +39,8 @@ exports.genStepConfig = function genStepConfig(node) {
       config.attrs = {
         title: node.title,
         d: 'm' + node.x + ',' + node.y + ' m10,0 l140,0 l10,10 l0,40 l-10,10 l-140,0 l-10,-10 l0,-40 z',
-        stroke: '#00007f',
-        fill: '#fffff0'
+        stroke: '#D81B60',
+        fill: '#E91E63'
       };
       config.name = 'path';
       return config;
@@ -51,8 +51,8 @@ exports.genStepConfig = function genStepConfig(node) {
         width: constants.STEP_WIDTH,
         x: node.x,
         y: node.y,
-        stroke: '#00007f',
-        fill: '#fffff0'
+        stroke: '#1E88E5',
+        fill: '#2196F3'
       };
       config.name = 'rect';
       return config;
@@ -107,7 +107,7 @@ exports.genConnectorAttrs = function genConnectorAttrs(startNode, endNode, lineT
 exports.genBackgroundAttrs = function genBackgroundAttrs(bottom) {
   var attrs =  {
     'stroke-width': 2,
-    'stroke': '#428bca',
+    'stroke': '#2196F3',
     'fill': 'none',
   }
   var guidelineHeight = bottom - 200;
@@ -122,9 +122,15 @@ exports.genBackgroundAttrs = function genBackgroundAttrs(bottom) {
 }
 
 exports.genStepTitleAttrs = function genStepTitleAttrs(node) {
-  return {x: node.x + constants.TEXT_X_OFFSET, y: node.y + constants.TEXT_Y_OFFSET}
+  return {
+    'x': node.x + constants.TEXT_X_OFFSET,
+    'y': node.y + constants.TEXT_Y_OFFSET,
+    'fill': '#ffffff',
+    'font-family': 'Verdana',
+    'font-size': 12
+  }
 }
 
 exports.truncateTitle = function truncateTitle(title) {
-  return title.length > 20 ? title.substring(0, 20) + '...' : title;
+  return title.length > constants.TITLE_MAX_LENGTH ? title.substring(0, constants.TITLE_MAX_LENGTH) + '...' : title;
 }
