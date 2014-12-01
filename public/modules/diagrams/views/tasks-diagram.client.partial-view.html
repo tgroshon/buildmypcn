@@ -41,31 +41,26 @@
                             <input type="text" class="form-control" id="domain-subtitle-{{$index}}" name="domain-subtitle-{{$index}}" data-ng-model="domain.subtitle" placeholder="Domain {{$index + 1}} subtitle" required>
                         </div>
                     </div>
-                    <!--<div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <button type="button" class="btn btn-danger" data-ng-click="diagram.domains.splice($index, 1)">Delete domain {{$index + 1}}</button>
-                        </div>
-                    </div>-->
                 </div>
             </div>
         </div>
-        <!--<div class="form-group">
-            <button type="button" class="btn btn-info" data-ng-click="addDomain()">Add a new domain</button>
-        </div>-->
     </fieldset>
     <fieldset>
         <legend>Steps</legend>
         <table class="task-table" data-toggle="table">
             <tr>
+                <th>Step Number</th>
                 <th>Title</th>
                 <th>Type</th>
                 <th>Emphasized?</th>
-                <th>Specific value</th>
-                <th>Generic value</th>
+                <th>Specific Value</th>
+                <th>Generic Value</th>
                 <th>Predecessors</th>
                 <th>Domain</th>
+                <th>Region</th>
             </tr>
             <tr data-ng-repeat="step in diagram.steps">
+                <td>{{$index + 1}}</td>
                 <td><input type="text" class="form-control" id="step-title-{{$index}}" name="step-title-{{$index}}" data-ng-model="step.title" placeholder="Step {{$index + 1}} title" required></td>
                 <td><select data-ng-model="step.type" id="step-type-{{$index}}" data-ng-options="stepType.name as stepType.displayedName for stepType in stepTypes" data-ng-required class="form-control"></select></td>
                 <td><input type="checkbox" id="step-emphasized-{{$index}}" name="step-emphasized-{{$index}}" data-ng-model="step.emphasized"> Step {{$index + 1}} emphasized?</td>
@@ -73,6 +68,7 @@
                 <td><select data-ng-model="step.value_generic" id="step-value-specific-{{$index}}" data-ng-options="valueGeneric for valueGeneric in valueGenericOptions" data-ng-required class="form-control"></select></td>
                 <td>{{step.predecessors[0].type}}</td>
                 <td><select data-ng-model="step.domain" id="step-domain-{{$index}}" data-ng-options="domain as domain.title for domain in diagram.domains" data-ng-required class="form-control"></select></td>
+                <td><select data-ng-model="step.selectedRegion" data-ng-options="region.displayName for region in regions"></select></td>
                 <td><button type="button" class="btn btn-danger" data-ng-click="deleteStep($index)">&#10006</button></td>
             </tr>
         </table>

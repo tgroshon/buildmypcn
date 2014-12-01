@@ -20,6 +20,13 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             {'name': 'divergent_process', 'displayedName': 'Divergent Process'}
         ];
 
+        $scope.regions = [
+            {'name': 'direct_leading', 'displayName': 'Direct Leading'},
+            {'name': 'direct_shared', 'displayName': 'Direct Shared'},
+            {'name': 'surrogate', 'displayName': 'Surrogate'},
+            {'name': 'independent', 'displayName': 'Independent'}
+        ];
+
         $scope.predecessorTypes = [
             {'name': 'normal_relationship', 'displayName': 'Normal'},
             {'name': 'loose_temporal_relationship', 'displayName': 'Loose Temporal'}
@@ -61,6 +68,8 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
                 steps: this.diagram.steps
             });
 
+            setRegions(diagram);
+
             // Redirect after save
             diagram.$save(function (response) {
                 $location.path('diagrams/' + response._id);
@@ -95,8 +104,10 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             var diagram = $scope.diagram;
 
             setPredecessors(diagram);
+            setRegions(diagram);
 
             diagram.group = $scope.selectedGroup;
+
             diagram.$update(function () {
                 $location.path('diagrams/' + diagram._id);
             }, function (errorResponse) {
@@ -109,6 +120,14 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
                 var step = diagram.steps[i];
                 var previousStep = diagram.steps[i - 1];
                 step.predecessors = [PCN.initPredecessor(previousStep.id, $scope.predecessorTypes[0].displayName, previousStep.title)];
+            }
+        }
+
+        function setRegions(diagram) {
+            for (var i = 0; i < diagram.steps.length; i++) {
+                var step = diagram.steps[i];
+                var name = step.selectedRegion.name;
+                step.domain.region = { type: name, with_domain: diagram.domains[0].id === step.domain.id ? diagram.domains[1].id : diagram.domains[0].id };
             }
         }
 
@@ -146,6 +165,13 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
                     for (var j = 0; j < $scope.diagram.domains.length; j++) {
                         if (step.domain.id === $scope.diagram.domains[j].id) {
                             step.domain = $scope.diagram.domains[j];
+                            break;
+                        }
+                    }
+
+                    for (var j = 0; j < $scope.regions.length; j++) {
+                        if (step.domain.region.type === $scope.regions[j].name) {
+                            step.selectedRegion = $scope.regions[j];
                             break;
                         }
                     }
