@@ -51,9 +51,12 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
         $scope.create = function () {
             // Create new Diagram object
             var diagram = new Diagrams({
-                title: this.diagram.metadata.title,
+                metadata: {
+                    title: this.diagram.metadata.title,
+                    description: this.diagram.metadata.description,
+                    author: $scope.authentication.user.displayName
+                },
                 group: this.selectedGroup._id,
-                description: this.diagram.metadata.description,
                 domains: this.diagram.domains,
                 steps: this.diagram.steps
             });

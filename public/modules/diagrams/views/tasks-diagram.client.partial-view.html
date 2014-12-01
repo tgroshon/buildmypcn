@@ -55,7 +55,7 @@
     </fieldset>
     <fieldset>
         <legend>Steps</legend>
-        <table data-toggle="table">
+        <table class="task-table" data-toggle="table">
             <tr>
                 <th>Title</th>
                 <th>Type</th>
@@ -73,9 +73,9 @@
                 <td><select data-ng-model="step.value_generic" id="step-value-specific-{{$index}}" data-ng-options="valueGeneric for valueGeneric in valueGenericOptions" data-ng-required class="form-control"></select></td>
                 <td>{{step.predecessors[0].type}}</td>
                 <td><select data-ng-model="step.domain" id="step-domain-{{$index}}" data-ng-options="domain as domain.title for domain in diagram.domains" data-ng-required class="form-control"></select></td>
-                <td><button type="button" class="btn btn-danger" data-ng-click="deleteStep($index)">Delete step {{$index + 1}}</button></td>
+                <td><button type="button" class="btn btn-danger" data-ng-click="deleteStep($index)">&#10006</button></td>
             </tr>
         </table>
-        <button type="button" class="btn btn-info" data-ng-click="addStep()">Add a new step</button>
+        <button type="button" class="btn btn-info" data-ng-click="addStep()">&#10010</button>
     </fieldset>
 </div>

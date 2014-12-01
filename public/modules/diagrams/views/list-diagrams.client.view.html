@@ -8,9 +8,9 @@
 				Posted on
 				<span data-ng-bind="diagram.created | date:'medium'"></span>
 				by
-				<span data-ng-bind="diagram.user.displayName"></span>
+				<span data-ng-bind="diagram.metadata.author"></span>
 			</small>
-			<h4 class="list-group-item-heading" data-ng-bind="diagram.title"></h4>
+			<h4 class="list-group-item-heading" data-ng-bind="diagram.metadata.title"></h4>
         </a>
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!diagrams.$resolved || diagrams.length">

@@ -10,18 +10,24 @@ var Schema = mongoose.Schema;
  * Diagram Schema
  */
 var DiagramSchema = new Schema({
-	title: {
-		type: String,
-		default: '',
-		required: 'Please give the diagram a title',
-		trim: true
-	},
-	description: {
-		type: String,
-		default: '',
-		required: 'Please give the diagram a description',
-		trim: true
-	},
+    metadata: {
+        title: {
+            type: String,
+            default: '',
+            required: 'Please give the diagram a title',
+            trim: true
+        },
+        description: {
+            type: String,
+            default: '',
+            required: 'Please give the diagram a description',
+            trim: true
+        },
+        author: {
+            type: String,
+            default: ''
+        }
+    },
 	domains: {
 		type: Array
 	},

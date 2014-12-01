@@ -7,17 +7,11 @@
             <fieldset>
                 <div class="form-group">
                     <div class="controls">
-                        <label class="control-label" for="name">Title</label>
-                        <input type="text" data-ng-model="diagram.title" id="name" class="form-control" placeholder="Title" required>
-                        <label class="control-label" for="selectedGroup">Selected Group</label>
-                        <select ng-model="selectedGroup" ng-options="group.name for group in groups" id="selectedGroup" class="form-control" required></select>
-                        <label class="control-label" for="description">Description</label>
-                        <textarea rows="5" data-ng-model="diagram.description" id="description" class="form-control" placeholder="Description" required></textarea>
                         <tasks></tasks>
                     </div>
                 </div>
                 <div class="form-group">
-                    <button type="submit" value="Update" class="btn btn-default">Save Diagram</button>
+                    <button type="submit" value="Update" class="btn btn-default">Save</button>
                 </div>
 				<div data-ng-show="error" class="text-danger">
 					<strong data-ng-bind="error"></strong>

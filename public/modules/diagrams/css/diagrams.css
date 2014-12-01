@@ -1,3 +1,16 @@
 .diagram__pcn-grapher {
   width: 100%;
 }
+
+.task-table th, td {
+    text-align: center;
+    padding-left: 10px;
+}
+
+.task-table td {
+    padding-top: 10px;
+}
+
+.task-table {
+    margin-bottom: 10px;
+}
