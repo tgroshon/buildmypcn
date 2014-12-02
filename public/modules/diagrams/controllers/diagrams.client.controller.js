@@ -66,12 +66,10 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
 
         $scope.addStep = function () {
             $scope.diagram.steps.push(PCN.initStep($scope.lastSelectedDomain, '', '', null));
-            setPredecessors($scope.diagram);
         };
 
         $scope.deleteStep = function (index) {
             $scope.diagram.steps.splice(index, 1);
-            setPredecessors($scope.diagram);
         };
 
         $scope.getDomainFromId = function (domainId) {
@@ -86,10 +84,6 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             step.domain.id = domain.id;
             $scope.lastSelectedDomain = domain;
         };
-
-        $scope.toggleEmphasizeStep = function (step) {
-            step.emphasized = !step.emphasized
-        }
 
         // Create new Diagram
         $scope.create = function () {
@@ -123,7 +117,7 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
                 diagram.$remove();
 
                 for (var i in $scope.diagrams) {
-                    if ($scope.diagrams [i] === diagram) {
+                    if ($scope.diagrams[i] === diagram) {
                         $scope.diagrams.splice(i, 1);
                     }
                 }
@@ -150,17 +144,21 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
         };
 
         function setPredecessors(diagram) {
-            for (var i = 1; i < diagram.steps.length; i++) {
-                var step = diagram.steps[i];
-                var previousStep = diagram.steps[i - 1];
+            for (var i = 1; i < $scope.diagram.steps.length; i++) {
+                var step = $scope.diagram.steps[i];
+                var previousStep = $scope.diagram.steps[i - 1];
                 step.predecessors = [PCN.initPredecessor(previousStep.id, $scope.predecessorTypes[0].displayName, previousStep.title)];
             }
         }
 
-        $scope.updateStepRegion = function (step) {
-            var name = step.selectedRegion.name;
-            step.domain.region = { type: name, with_domain: $scope.diagram.domains[0].id === step.domain.id ? $scope.diagram.domains[1].id : $scope.diagram.domains[0].id };
-        }
+        $scope.updateStepRegions = function () {
+            // TODO BUG this doesn't work right on update of diagram
+            for (var i = 0; i < $scope.diagram.steps.length; i++) {
+                var step = $scope.diagram.steps[i];
+                var name = step.selectedRegion.name;
+                step.domain.region = { type: name, with_domain: $scope.diagram.domains[0].id === step.domain.id ? $scope.diagram.domains[1].id : $scope.diagram.domains[0].id };
+            }
+        };
 
         // Find a list of Diagrams
         $scope.find = function () {
@@ -196,7 +194,7 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
                         }
                     }
 
-                    for (var j = 0; j < $scope.regions.length; j++) {
+                    for (j = 0; j < $scope.regions.length; j++) {
                         if (step.domain.region.type === $scope.regions[j].name) {
                             step.selectedRegion = $scope.regions[j];
                             break;
