@@ -35,22 +35,22 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
         // Smiley face unicode HTML entity: \u263a
         // Frowny face unicode HTML entity: \u2639
         $scope.valueSpecificOptions = [
-            {'name': '3', 'displayName': '\u263a\u263a\u263a'},
-            {'name': '2', 'displayName': '\u263a\u263a'},
-            {'name': '1', 'displayName': '\u263a'},
-            {'name': '0', 'displayName': 'O'},
-            {'name': '-1', 'displayName': '\u2639'},
-            {'name': '-2', 'displayName': '\u2639\u2639'},
-            {'name': '-3', 'displayName': '\u2639\u2639\u2639'},
+            {'name': -3, 'displayName': '\u2639\u2639\u2639'},
+            {'name': -2, 'displayName': '\u2639\u2639'},
+            {'name': -1, 'displayName': '\u2639'},
+            {'name': 0, 'displayName': 'O'},
+            {'name': 1, 'displayName': '\u263a'},
+            {'name': 2, 'displayName': '\u263a\u263a'},
+            {'name': 3, 'displayName': '\u263a\u263a\u263a'},
         ];
         $scope.valueGenericOptions = [
-            {'name': '3', 'displayName': '$$$'},
-            {'name': '2', 'displayName': '$$'},
-            {'name': '1', 'displayName': '$'},
-            {'name': '0', 'displayName': 'O'},
-            {'name': '-1', 'displayName': '-$'},
-            {'name': '-2', 'displayName': '-$$'},
-            {'name': '-3', 'displayName': '-$$$'},
+            {'name': -3, 'displayName': '-$$$'},
+            {'name': -2, 'displayName': '-$$'},
+            {'name': -1, 'displayName': '-$'},
+            {'name': 0, 'displayName': 'O'},
+            {'name': 1, 'displayName': '$'},
+            {'name': 2, 'displayName': '$$'},
+            {'name': 3, 'displayName': '$$$'},
         ];
 
         // Create a new, blank PCN object
