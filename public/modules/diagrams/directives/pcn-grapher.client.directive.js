@@ -7,7 +7,7 @@ angular.module('diagrams').directive('pcnGrapher', [
     return {
       restrict: 'E',
       replace: true,
-      template: '<object data="/diagrams/{{diagram._id}}/graph" type="image/svg+xml"></object>',
+      template: '<object class="pcn-grapher-directive" data="/diagrams/{{diagram._id}}/graph" type="image/svg+xml"></object>',
       scope: {
         diagram: '=pcn'
       }
