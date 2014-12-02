@@ -96,10 +96,16 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
 'use strict';
 
 
-angular.module('core').controller('HomeController', ['$scope', 'Authentication',
-	function($scope, Authentication) {
+angular.module('core').controller('HomeController', ['$scope', 'Authentication','Groups','Diagrams',
+	function($scope, Authentication, Groups, Diagrams) {
 		// This provides Authentication context.
 		$scope.authentication = Authentication;
+		
+		//Load in data for groups & diagrams
+		$scope.find = function() {
+			$scope.groups = Groups.query();
+			$scope.diagrams = Diagrams.query();
+		};
 	}
 ]);
 
@@ -328,25 +334,52 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             {'name': 'divergent_process', 'displayedName': 'Divergent Process'}
         ];
 
+        $scope.regions = [
+            {'name': 'independent', 'displayName': 'Independent'},
+            {'name': 'direct_leading', 'displayName': 'Direct Leading'},
+            {'name': 'direct_shared', 'displayName': 'Direct Shared'},
+            {'name': 'surrogate', 'displayName': 'Surrogate'}
+        ];
+
         $scope.predecessorTypes = [
             {'name': 'normal_relationship', 'displayName': 'Normal'},
             {'name': 'loose_temporal_relationship', 'displayName': 'Loose Temporal'}
         ];
 
-        $scope.valueSpecificOptions = [-3, -2, -1, 0, 1, 2, 3];
-        $scope.valueGenericOptions = [-3, -2, -1, 0, 1, 2, 3];
+        // Smiley face unicode HTML entity: \u263a
+        // Frowny face unicode HTML entity: \u2639
+        $scope.valueSpecificOptions = [
+            {'name': '3', 'displayName': '\u263a\u263a\u263a'},
+            {'name': '2', 'displayName': '\u263a\u263a'},
+            {'name': '1', 'displayName': '\u263a'},
+            {'name': '0', 'displayName': 'O'},
+            {'name': '-1', 'displayName': '\u2639'},
+            {'name': '-2', 'displayName': '\u2639\u2639'},
+            {'name': '-3', 'displayName': '\u2639\u2639\u2639'},
+        ];
+        $scope.valueGenericOptions = [
+            {'name': '3', 'displayName': '$$$'},
+            {'name': '2', 'displayName': '$$'},
+            {'name': '1', 'displayName': '$'},
+            {'name': '0', 'displayName': 'O'},
+            {'name': '-1', 'displayName': '-$'},
+            {'name': '-2', 'displayName': '-$$'},
+            {'name': '-3', 'displayName': '-$$$'},
+        ];
 
         // Create a new, blank PCN object
         $scope.diagram = PCN.initPCN('', '', '');
         $scope.diagram.domains = [PCN.initDomain('', 'Provider'), PCN.initDomain('', 'Customer')];
-        $scope.diagram.steps = [PCN.initStep($scope.diagram.domains[0], '', '', null)];
+        $scope.diagram.steps = [PCN.initStep($scope.diagram.domains[1], '', '', null)];
+
+        $scope.lastSelectedDomain = $scope.diagram.domains[1];
 
         $scope.addDomain = function () {
             $scope.diagram.domains.push(PCN.initDomain('', ''));
         };
 
         $scope.addStep = function () {
-            $scope.diagram.steps.push(PCN.initStep($scope.diagram.domains[0], '', '', null));
+            $scope.diagram.steps.push(PCN.initStep($scope.lastSelectedDomain, '', '', null));
             setPredecessors($scope.diagram);
         };
 
@@ -355,13 +388,29 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             setPredecessors($scope.diagram);
         };
 
+        $scope.getDomainFromId = function (domainId) {
+            for (var i = 0; i < $scope.diagram.domains.length; i++) {
+                if ($scope.diagram.domains[i].id === domainId) {
+                    return $scope.diagram.domains[i];
+                }
+            }
+        };
+
+        $scope.changeStepDomain = function (step, domain) {
+            step.domain.id = domain.id;
+            $scope.lastSelectedDomain = domain;
+        };
+
         // Create new Diagram
         $scope.create = function () {
             // Create new Diagram object
             var diagram = new Diagrams({
-                title: this.diagram.metadata.title,
+                metadata: {
+                    title: this.diagram.metadata.title,
+                    description: this.diagram.metadata.description,
+                    author: $scope.authentication.user.displayName
+                },
                 group: this.selectedGroup._id,
-                description: this.diagram.metadata.description,
                 domains: this.diagram.domains,
                 steps: this.diagram.steps
             });
@@ -402,6 +451,7 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             setPredecessors(diagram);
 
             diagram.group = $scope.selectedGroup;
+
             diagram.$update(function () {
                 $location.path('diagrams/' + diagram._id);
             }, function (errorResponse) {
@@ -417,9 +467,10 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             }
         }
 
-        $scope.setEditedGroup = function () {
-            $scope.setEditedGroup = $scope.diagram.group;
-        };
+        $scope.updateStepRegion = function (step) {
+            var name = step.selectedRegion.name;
+            step.domain.region = { type: name, with_domain: $scope.diagram.domains[0].id === step.domain.id ? $scope.diagram.domains[1].id : $scope.diagram.domains[0].id };
+        }
 
         // Find a list of Diagrams
         $scope.find = function () {
@@ -436,7 +487,7 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             promise.$promise.then(function (diagram) {
                 $scope.diagram = diagram;
                 $scope.selectedGroup = null;
-                
+
                 var i;
 
                 for (i = 0; i < $scope.groups.length; i++) {
@@ -451,6 +502,13 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
                     for (var j = 0; j < $scope.diagram.domains.length; j++) {
                         if (step.domain.id === $scope.diagram.domains[j].id) {
                             step.domain = $scope.diagram.domains[j];
+                            break;
+                        }
+                    }
+
+                    for (var j = 0; j < $scope.regions.length; j++) {
+                        if (step.domain.region.type === $scope.regions[j].name) {
+                            step.selectedRegion = $scope.regions[j];
                             break;
                         }
                     }
@@ -491,6 +549,15 @@ angular.module('diagrams').directive('tasks', ['$document',
         };
     }
 ]);
+
+'use strict';
+
+// Diagrams filters
+angular.module('diagrams').filter('domainTitle', function() {
+    return function(domain) {
+        return domain.title || domain.subtitle || 'Unknown domain';
+    };
+});
 
 'use strict';
 
