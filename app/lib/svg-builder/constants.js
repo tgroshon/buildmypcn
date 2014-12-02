@@ -2,7 +2,7 @@
 
 exports.DIAGRAM_WIDTH = 1260;
 exports.ROW_SPACE = 100;
-exports.ROW_OFFSET = 40;
+exports.ROW_OFFSET = 60;
 exports.REGION_WIDTH = 180;
 exports.REGION_OFFSET = 10;
 exports.STEP_HEIGHT = 60;

@@ -2,6 +2,7 @@
 
 var constants = require('../../constants');
 var genBackgroundAttrs = require('../generators/generate-background-attrs');
+var mutateAddHeaders = require('./mutate-add-headers');
 
 module.exports = function(root, diagramTitle, layoutGraph) {
   var bottom = layoutGraph.getBottomY();
@@ -36,5 +37,7 @@ module.exports = function(root, diagramTitle, layoutGraph) {
   root.ele('text', titleAttrs, diagramTitle);
   root.ele('text', providerAttrs, layoutGraph.provider.title);
   root.ele('text', consumerAttrs, layoutGraph.consumer.title);
+
+  mutateAddHeaders(root);
 };
 
