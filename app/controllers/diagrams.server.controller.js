@@ -3,13 +3,12 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-	errorHandler = require('./errors'),
-	Diagram = mongoose.model('Diagram'),
-	Group = mongoose.model('Group'),
-	_ = require('lodash');
-
-var svgBuilder = require('../lib/svg-builder');
+var mongoose = require('mongoose');
+var errorHandler = require('./errors');
+var Diagram = mongoose.model('Diagram');
+var Group = mongoose.model('Group');
+var _ = require('lodash');
+var chartBuilder = require('pcnchart');
 
 /**
  *
@@ -24,7 +23,7 @@ exports.graph = function(req, res) {
     'Content-Type': 'image/svg+xml',
     'X-Frame-Options': 'SAMEORIGIN'
   });
-  res.send(svgBuilder(diagram));
+  res.send(chartBuilder(diagram));
 };
 
 /**
