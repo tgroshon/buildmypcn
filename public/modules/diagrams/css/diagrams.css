@@ -18,8 +18,14 @@
 .dropdown-menu-custom {
     padding: 10px 10px;
     min-width: 286px;
+    margin-bottom: 30px;
 }
 
 .dropdown-menu-custom .btn-group .btn {
     min-width: 38px;
+}
+
+.row.step-row {
+    padding: 5px;
+    margin-bottom: 10px;
 }
