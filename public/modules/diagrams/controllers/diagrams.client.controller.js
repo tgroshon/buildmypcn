@@ -1,11 +1,5 @@
 'use strict';
 
-angular.module('diagrams').filter('groupTitle', function() {
-    return function(group) {
-        return group.title || group.subtitle || 'Unknown group';
-    };
-});
-
 // Diagrams controller
 angular.module('diagrams').controller('DiagramsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Diagrams', 'Groups', 'PCN',
     function ($scope, $stateParams, $location, Authentication, Diagrams, Groups, PCN) {
