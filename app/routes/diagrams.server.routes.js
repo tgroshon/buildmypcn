@@ -12,6 +12,9 @@ module.exports = function(app) {
 	app.route('/diagrams/:diagramId/graph')
 	    .get(diagrams.graph);
 
+	app.route('/diagrams/:diagramId/download')
+	    .get(diagrams.download);
+
 	app.route('/diagrams/:diagramId')
 		.get(users.requiresLogin, diagrams.hasAuthorization, diagrams.read)
 		.put(users.requiresLogin, diagrams.hasAuthorization, diagrams.update)

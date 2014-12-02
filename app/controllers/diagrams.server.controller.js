@@ -11,8 +11,11 @@ var _ = require('lodash');
 var chartBuilder = require('pcnchart');
 var pdf = require('html-pdf');
 
+function formatDiagramTitle(diagram) {
+  return diagram.metadata.title ? diagram.metadata.title.replace(/ /g, '_') : 'diagram'
+}
 /**
- *
+ * Server-side Diagram-to-SVG render
  */
 exports.graph = function(req, res) {
   var diagram = req.diagram;
@@ -21,6 +24,17 @@ exports.graph = function(req, res) {
     'X-Frame-Options': 'SAMEORIGIN'
   });
   res.send(chartBuilder(diagram));
+};
+
+/**
+ * Download Diagram Data
+ */
+exports.download = function(req, res) {
+  var title = formatDiagramTitle(req.diagram);
+  res.set({
+    'Content-disposition': 'attachment; filename=' + title + '.json'
+  });
+  res.send(req.diagram.toJSON());
 };
 
 /**
@@ -136,13 +150,17 @@ exports.hasAuthorization = function(req, res, next) {
  */
 exports.generatePdf = function(req, res, next) {
 	var diagram = req.diagram;
+  var title = formatDiagramTitle(req.diagram);
 
 	pdf.create(chartBuilder(diagram), function(err, buffer) {
 		if (err) {
 			return res.status(500).send('Error rendering PDF of diagram');
-		} else {
-			res.setHeader('Content-disposition', 'attachment; filename=diagram.pdf');
-			res.send(buffer);
 		}
+
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-disposition': 'attachment; filename=' + title + '.pdf'
+    });
+    res.send(buffer);
 	});
 };
