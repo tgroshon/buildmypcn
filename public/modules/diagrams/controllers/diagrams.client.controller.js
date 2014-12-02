@@ -21,10 +21,10 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
         ];
 
         $scope.regions = [
+            {'name': 'independent', 'displayName': 'Independent'},
             {'name': 'direct_leading', 'displayName': 'Direct Leading'},
             {'name': 'direct_shared', 'displayName': 'Direct Shared'},
-            {'name': 'surrogate', 'displayName': 'Surrogate'},
-            {'name': 'independent', 'displayName': 'Independent'}
+            {'name': 'surrogate', 'displayName': 'Surrogate'}
         ];
 
         $scope.predecessorTypes = [
@@ -40,12 +40,14 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
         $scope.diagram.domains = [PCN.initDomain('', 'Provider'), PCN.initDomain('', 'Customer')];
         $scope.diagram.steps = [PCN.initStep($scope.diagram.domains[1], '', '', null)];
 
+        $scope.lastSelectedDomain = $scope.diagram.domains[1];
+
         $scope.addDomain = function () {
             $scope.diagram.domains.push(PCN.initDomain('', ''));
         };
 
         $scope.addStep = function () {
-            $scope.diagram.steps.push(PCN.initStep($scope.diagram.domains[0], '', '', null));
+            $scope.diagram.steps.push(PCN.initStep($scope.lastSelectedDomain, '', '', null));
             setPredecessors($scope.diagram);
         };
 
@@ -64,6 +66,7 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
 
         $scope.changeStepDomain = function (step, domain) {
             step.domain.id = domain.id;
+            $scope.lastSelectedDomain = domain;
         };
 
         // Create new Diagram
@@ -79,8 +82,6 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
                 domains: this.diagram.domains,
                 steps: this.diagram.steps
             });
-
-            setRegions(diagram);
 
             // Redirect after save
             diagram.$save(function (response) {
@@ -116,7 +117,6 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             var diagram = $scope.diagram;
 
             setPredecessors(diagram);
-            setRegions(diagram);
 
             diagram.group = $scope.selectedGroup;
 
@@ -135,17 +135,10 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             }
         }
 
-        function setRegions(diagram) {
-            for (var i = 0; i < diagram.steps.length; i++) {
-                var step = diagram.steps[i];
-                var name = step.selectedRegion.name;
-                step.domain.region = { type: name, with_domain: diagram.domains[0].id === step.domain.id ? diagram.domains[1].id : diagram.domains[0].id };
-            }
+        $scope.updateStepRegion = function (step) {
+            var name = step.selectedRegion.name;
+            step.domain.region = { type: name, with_domain: $scope.diagram.domains[0].id === step.domain.id ? $scope.diagram.domains[1].id : $scope.diagram.domains[0].id };
         }
-
-        $scope.setEditedGroup = function () {
-            $scope.setEditedGroup = $scope.diagram.group;
-        };
 
         // Find a list of Diagrams
         $scope.find = function () {
