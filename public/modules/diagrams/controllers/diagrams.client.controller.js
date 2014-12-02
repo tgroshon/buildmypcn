@@ -147,7 +147,7 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             for (var i = 1; i < $scope.diagram.steps.length; i++) {
                 var step = $scope.diagram.steps[i];
                 var previousStep = $scope.diagram.steps[i - 1];
-                step.predecessors = [PCN.initPredecessor(previousStep.id, $scope.predecessorTypes[0].displayName, previousStep.title)];
+                step.predecessors = [PCN.initPredecessor(previousStep.id, $scope.predecessorTypes[0].name, previousStep.title)];
             }
         }
 
