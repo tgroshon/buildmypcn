@@ -4,11 +4,14 @@
 	</div>
 
 	<div class="pull-right">
-		<a class="btn btn-primary" href="/#!/diagrams/{{diagram._id}}/edit">
+		<a title="Edit diagram" class="btn btn-primary" href="/#!/diagrams/{{diagram._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>
-		<a class="btn btn-primary" data-ng-click="remove();">
+		<a title="Delete diagram" class="btn btn-primary" data-ng-click="remove();">
 			<i class="glyphicon glyphicon-trash"></i>
+		</a>
+		<a title="Download PDF of Diagram" class="btn btn-primary" href="/diagrams/{{diagram._id}}/pdf">
+			<i class="glyphicon glyphicon-download"></i>
 		</a>
 	</div>
 

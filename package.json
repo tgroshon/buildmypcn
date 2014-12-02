@@ -27,6 +27,7 @@
     "glob": "~4.0.5",
     "grunt-cli": "~0.1.13",
     "helmet": "~0.4.0",
+    "html-pdf": "^0.3.0",
     "lodash": "~2.4.1",
     "method-override": "~2.2.0",
     "mongoose": "~3.8.8",

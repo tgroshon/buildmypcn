@@ -9,6 +9,7 @@ var Diagram = mongoose.model('Diagram');
 var Group = mongoose.model('Group');
 var _ = require('lodash');
 var chartBuilder = require('pcnchart');
+var pdf = require('html-pdf');
 
 /**
  *
@@ -128,4 +129,20 @@ exports.hasAuthorization = function(req, res, next) {
     return next();
   else
     return res.status(403).send('User Not Authorized via Group for this diagram');
+};
+
+/**
+ * Generate PDF for a given resource
+ */
+exports.generatePdf = function(req, res, next) {
+	var diagram = req.diagram;
+
+	pdf.create(chartBuilder(diagram), function(err, buffer) {
+		if (err) {
+			return res.status(500).send('Error rendering PDF of diagram');
+		} else {
+			res.setHeader('Content-disposition', 'attachment; filename=diagram.pdf');
+			res.send(buffer);
+		}
+	});
 };
