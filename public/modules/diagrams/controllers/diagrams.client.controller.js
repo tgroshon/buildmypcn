@@ -14,10 +14,10 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
         });
 
         $scope.stepTypes = [
-            {'name': 'process', 'displayedName': 'Process'},
-            {'name': 'decision', 'displayedName': 'Decision'},
-            {'name': 'wait', 'displayedName': 'Wait'},
-            {'name': 'divergent_process', 'displayedName': 'Divergent Process'}
+            {'name': 'process', 'displayedName': '[ ]', 'description': 'Process'},
+            {'name': 'decision', 'displayedName': '<>', 'description': 'Decision'},
+            {'name': 'wait', 'displayedName': '{ }', 'description': 'Wait'},
+            {'name': 'divergent_process', 'displayedName': '( )', 'description': 'Divergent Process'}
         ];
 
         $scope.regions = [
@@ -158,14 +158,6 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
                 var name = step.selectedRegion.name;
                 step.domain.region = { type: name, with_domain: $scope.diagram.domains[0].id === step.domain.id ? $scope.diagram.domains[1].id : $scope.diagram.domains[0].id };
             }
-        };
-
-        $scope.setValueGeneric = function(step, option) {
-            step.value_generic = option;
-        };
-
-        $scope.setValueSpecific = function(step, option) {
-            step.value_specific = option;
         };
 
         // Find a list of Diagrams

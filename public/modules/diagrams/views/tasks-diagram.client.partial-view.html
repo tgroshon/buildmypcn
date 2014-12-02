@@ -64,7 +64,7 @@
                 <th>Delete</th>
             </tr>
             <tr data-ng-repeat="step in diagram.steps">
-                <td><span class="badge">{{$index + 1}}</span></td>
+                <td><p class="form-control-static"><span class="badge">{{$index + 1}}</span></p></td>
                 <td>
                     <div class="input-group">
                         <div class="input-group-btn" data-dropdown data-is-open="domainDropdownStatus$index.isopen">
@@ -89,19 +89,20 @@
                             <li class="divider"></li>
                             <li data-ng-click="$event.stopPropagation();">
                                 <div class="btn-group btn-group-xs" role="group">
-                                    <button type="button" class="btn btn-default" data-ng-repeat="valueGenericOption in valueGenericOptions" ng-click="setValueGeneric(step, valueGenericOption.name)">{{ valueGenericOption.displayName }}</button>
+                                    <label class="btn btn-default" data-ng-repeat="valueGenericOption in valueGenericOptions" data-ng-model="step.value_generic" btn-radio="valueGenericOption.name">{{ valueGenericOption.displayName }}</label>
                                 </div>
                             </li>
                             <li class="divider"></li>
                             <li data-ng-click="$event.stopPropagation();">
                                 <div class="btn-group btn-group-xs" role="group">
-                                    <button type="button" class="btn btn-default" data-ng-repeat="valueSpecificOption in valueSpecificOptions" ng-click="setValueSpecific(step, valueSpecificOption.name)">{{ valueSpecificOption.displayName }}</button>
+                                    <label class="btn btn-default" data-ng-repeat="valueSpecificOption in valueSpecificOptions" data-ng-model="step.value_specific" btn-radio="valueSpecificOption.name">{{ valueSpecificOption.displayName }}</label>
                                 </div>
                             </li>
                             <li class="divider"></li>
                             <li data-ng-click="$event.stopPropagation();">
+                                Step type:&nbsp;&nbsp;
                                 <div class="btn-group">
-                                    <label class="btn btn-primary" data-ng-repeat="stepType in stepTypes" data-ng-model="step.type" btn-radio="stepType.name">{{ stepType.displayedName }}</label>
+                                    <label class="btn btn-default" data-ng-repeat="stepType in stepTypes" data-ng-model="step.type" data-btn-radio="stepType.name" data-tooltip="{{ stepType.description }}">{{ stepType.displayedName }}</label>
                                 </div>
                             </li>
                         </ul>
