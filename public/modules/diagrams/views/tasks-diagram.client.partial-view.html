@@ -59,17 +59,16 @@
                 <th>Step #</th>
                 <th>Title</th>
                 <th>Region</th>
-                <th>Type</th>
                 <th>Options</th>
                 <th>Predecessors</th>
                 <th>Delete</th>
             </tr>
             <tr data-ng-repeat="step in diagram.steps">
-                <td>{{$index + 1}}</td>
+                <td><span class="badge">{{$index + 1}}</span></td>
                 <td>
                     <div class="input-group">
                         <div class="input-group-btn" data-dropdown data-is-open="domainDropdownStatus$index.isopen">
-                            <button type="button" class="btn btn-default btn-lg" data-dropdown-toggle>
+                            <button type="button" class="btn btn-default" data-dropdown-toggle>
                                 <span>{{ getDomainFromId(step.domain.id) | domainTitle }}</span> <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
@@ -77,33 +76,36 @@
                             </ul>
                         </div>
 
-                        <input type="text" class="form-control input-lg" id="step-title-{{$index}}" name="step-title-{{$index}}" data-ng-model="step.title" placeholder="needs pizza" required>
+                        <input type="text" class="form-control" id="step-title-{{$index}}" name="step-title-{{$index}}" data-ng-model="step.title" placeholder="needs pizza" required>
                     </div>
                 </td>
                 <td><select data-ng-model="step.selectedRegion" data-ng-change="updateStepRegions()" class="form-control" data-ng-options="region.displayName for region in regions"></select></td>
-                <td><select data-ng-model="step.type" id="step-type-{{$index}}" data-ng-options="stepType.name as stepType.displayedName for stepType in stepTypes" data-ng-required class="form-control"></select></td>
-                <td>{{ step }}
+                <td>
+                    <!-- Options dropdown -->
                     <div class="btn-group" data-dropdown data-is-open="stepOptionsDropdownStatus$index.isopen">
                         <button type="button" class="btn btn-warning" data-dropdown-toggle>Options <span class="caret"></span></button>
                         <ul class="dropdown-menu dropdown-menu-custom" role="menu">
-                            <li ng-click="$event.stopPropagation();"><label class="checkbox-inline"><input type="checkbox" ng-model="step.emphasized"> Emphasized?</label></li>
+                            <li data-ng-click="$event.stopPropagation();"><label class="checkbox-inline"><input type="checkbox" ng-model="step.emphasized"> Emphasized?</label></li>
                             <li class="divider"></li>
-                            <li ng-click="$event.stopPropagation();">
+                            <li data-ng-click="$event.stopPropagation();">
                                 <div class="btn-group btn-group-xs" role="group">
                                     <button type="button" class="btn btn-default" data-ng-repeat="valueGenericOption in valueGenericOptions" ng-click="setValueGeneric(step, valueGenericOption.name)">{{ valueGenericOption.displayName }}</button>
                                 </div>
                             </li>
                             <li class="divider"></li>
-                            <li ng-click="$event.stopPropagation();">
+                            <li data-ng-click="$event.stopPropagation();">
                                 <div class="btn-group btn-group-xs" role="group">
                                     <button type="button" class="btn btn-default" data-ng-repeat="valueSpecificOption in valueSpecificOptions" ng-click="setValueSpecific(step, valueSpecificOption.name)">{{ valueSpecificOption.displayName }}</button>
                                 </div>
                             </li>
+                            <li class="divider"></li>
+                            <li data-ng-click="$event.stopPropagation();">
+                                <div class="btn-group">
+                                    <label class="btn btn-primary" data-ng-repeat="stepType in stepTypes" data-ng-model="step.type" btn-radio="stepType.name">{{ stepType.displayedName }}</label>
+                                </div>
+                            </li>
                         </ul>
                     </div>
-                    <!-- <select data-ng-model="step.value_specific" id="step-value-specific-{{\$index}}" data-ng-options="valueSpecificOption.name as valueSpecificOption.displayName for valueSpecificOption in valueSpecificOptions" data-ng-required class="form-control"></select>
-                    <select data-ng-model="step.value_generic" id="step-value-specific-{{\$index}}" data-ng-options="valueGenericOption.name as valueGenericOption.displayName for valueGenericOption in valueGenericOptions" data-ng-required class="form-control"></select>
-                     -->
                 </td>
                 <td>
                      <select multiple data-ng-model="step.predecessors" id="step-predecessors-{{$index}}" class="form-control"><option data-ng-repeat="predecessor in diagram.steps" value="predecessor.id">{{predecessor.title}}</option></select>
