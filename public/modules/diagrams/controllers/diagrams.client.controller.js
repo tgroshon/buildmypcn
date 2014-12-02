@@ -1,5 +1,11 @@
 'use strict';
 
+angular.module('diagrams').filter('groupTitle', function() {
+    return function(group) {
+        return group.title || group.subtitle || 'Unknown group';
+    };
+});
+
 // Diagrams controller
 angular.module('diagrams').controller('DiagramsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Diagrams', 'Groups', 'PCN',
     function ($scope, $stateParams, $location, Authentication, Diagrams, Groups, PCN) {
@@ -38,7 +44,7 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
         // Create a new, blank PCN object
         $scope.diagram = PCN.initPCN('', '', '');
         $scope.diagram.domains = [PCN.initDomain('', 'Provider'), PCN.initDomain('', 'Customer')];
-        $scope.diagram.steps = [PCN.initStep($scope.diagram.domains[0], '', '', null)];
+        $scope.diagram.steps = [PCN.initStep($scope.diagram.domains[1], '', '', null)];
 
         $scope.addDomain = function () {
             $scope.diagram.domains.push(PCN.initDomain('', ''));
@@ -52,6 +58,18 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
         $scope.deleteStep = function (index) {
             $scope.diagram.steps.splice(index, 1);
             setPredecessors($scope.diagram);
+        };
+
+        $scope.getDomainFromId = function (domainId) {
+            for (var i = 0; i < $scope.diagram.domains.length; i++) {
+                if ($scope.diagram.domains[i].id === domainId) {
+                    return $scope.diagram.domains[i];
+                }
+            }
+        };
+
+        $scope.changeStepDomain = function (step, domain) {
+            step.domain.id = domain.id;
         };
 
         // Create new Diagram
@@ -150,7 +168,7 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             promise.$promise.then(function (diagram) {
                 $scope.diagram = diagram;
                 $scope.selectedGroup = null;
-                
+
                 var i;
 
                 for (i = 0; i < $scope.groups.length; i++) {
