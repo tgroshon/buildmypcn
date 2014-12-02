@@ -328,10 +328,10 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
         });
 
         $scope.stepTypes = [
-            {'name': 'process', 'displayedName': 'Process'},
-            {'name': 'decision', 'displayedName': 'Decision'},
-            {'name': 'wait', 'displayedName': 'Wait'},
-            {'name': 'divergent_process', 'displayedName': 'Divergent Process'}
+            {'name': 'process', 'displayedName': '[ ]', 'description': 'Process'},
+            {'name': 'decision', 'displayedName': '<>', 'description': 'Decision'},
+            {'name': 'wait', 'displayedName': '{ }', 'description': 'Wait'},
+            {'name': 'divergent_process', 'displayedName': '( )', 'description': 'Divergent Process'}
         ];
 
         $scope.regions = [
@@ -349,22 +349,22 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
         // Smiley face unicode HTML entity: \u263a
         // Frowny face unicode HTML entity: \u2639
         $scope.valueSpecificOptions = [
-            {'name': '3', 'displayName': '\u263a\u263a\u263a'},
-            {'name': '2', 'displayName': '\u263a\u263a'},
-            {'name': '1', 'displayName': '\u263a'},
-            {'name': '0', 'displayName': 'O'},
-            {'name': '-1', 'displayName': '\u2639'},
-            {'name': '-2', 'displayName': '\u2639\u2639'},
-            {'name': '-3', 'displayName': '\u2639\u2639\u2639'},
+            {'name': -3, 'displayName': '\u2639\u2639\u2639'},
+            {'name': -2, 'displayName': '\u2639\u2639'},
+            {'name': -1, 'displayName': '\u2639'},
+            {'name': 0, 'displayName': 'O'},
+            {'name': 1, 'displayName': '\u263a'},
+            {'name': 2, 'displayName': '\u263a\u263a'},
+            {'name': 3, 'displayName': '\u263a\u263a\u263a'},
         ];
         $scope.valueGenericOptions = [
-            {'name': '3', 'displayName': '$$$'},
-            {'name': '2', 'displayName': '$$'},
-            {'name': '1', 'displayName': '$'},
-            {'name': '0', 'displayName': 'O'},
-            {'name': '-1', 'displayName': '-$'},
-            {'name': '-2', 'displayName': '-$$'},
-            {'name': '-3', 'displayName': '-$$$'},
+            {'name': -3, 'displayName': '-$$$'},
+            {'name': -2, 'displayName': '-$$'},
+            {'name': -1, 'displayName': '-$'},
+            {'name': 0, 'displayName': 'O'},
+            {'name': 1, 'displayName': '$'},
+            {'name': 2, 'displayName': '$$'},
+            {'name': 3, 'displayName': '$$$'},
         ];
 
         // Create a new, blank PCN object
@@ -380,12 +380,10 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
 
         $scope.addStep = function () {
             $scope.diagram.steps.push(PCN.initStep($scope.lastSelectedDomain, '', '', null));
-            setPredecessors($scope.diagram);
         };
 
         $scope.deleteStep = function (index) {
             $scope.diagram.steps.splice(index, 1);
-            setPredecessors($scope.diagram);
         };
 
         $scope.getDomainFromId = function (domainId) {
@@ -433,7 +431,7 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
                 diagram.$remove();
 
                 for (var i in $scope.diagrams) {
-                    if ($scope.diagrams [i] === diagram) {
+                    if ($scope.diagrams[i] === diagram) {
                         $scope.diagrams.splice(i, 1);
                     }
                 }
@@ -460,17 +458,21 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
         };
 
         function setPredecessors(diagram) {
-            for (var i = 1; i < diagram.steps.length; i++) {
-                var step = diagram.steps[i];
-                var previousStep = diagram.steps[i - 1];
+            for (var i = 1; i < $scope.diagram.steps.length; i++) {
+                var step = $scope.diagram.steps[i];
+                var previousStep = $scope.diagram.steps[i - 1];
                 step.predecessors = [PCN.initPredecessor(previousStep.id, $scope.predecessorTypes[0].displayName, previousStep.title)];
             }
         }
 
-        $scope.updateStepRegion = function (step) {
-            var name = step.selectedRegion.name;
-            step.domain.region = { type: name, with_domain: $scope.diagram.domains[0].id === step.domain.id ? $scope.diagram.domains[1].id : $scope.diagram.domains[0].id };
-        }
+        $scope.updateStepRegions = function () {
+            // TODO BUG this doesn't work right on update of diagram
+            for (var i = 0; i < $scope.diagram.steps.length; i++) {
+                var step = $scope.diagram.steps[i];
+                var name = step.selectedRegion.name;
+                step.domain.region = { type: name, with_domain: $scope.diagram.domains[0].id === step.domain.id ? $scope.diagram.domains[1].id : $scope.diagram.domains[0].id };
+            }
+        };
 
         // Find a list of Diagrams
         $scope.find = function () {
@@ -506,7 +508,7 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
                         }
                     }
 
-                    for (var j = 0; j < $scope.regions.length; j++) {
+                    for (j = 0; j < $scope.regions.length; j++) {
                         if (step.domain.region.type === $scope.regions[j].name) {
                             step.selectedRegion = $scope.regions[j];
                             break;
