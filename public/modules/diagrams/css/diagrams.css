@@ -14,3 +14,12 @@
 .task-table {
     margin-bottom: 10px;
 }
+
+.dropdown-menu-custom {
+    padding: 10px 10px;
+    min-width: 286px;
+}
+
+.dropdown-menu-custom .btn-group .btn {
+    min-width: 38px;
+}

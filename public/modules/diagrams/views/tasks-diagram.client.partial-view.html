@@ -60,8 +60,7 @@
                 <th>Title</th>
                 <th>Region</th>
                 <th>Type</th>
-                <th>Emphasized?</th>
-                <th>Value</th>
+                <th>Options</th>
                 <th>Predecessors</th>
                 <th>Delete</th>
             </tr>
@@ -83,12 +82,31 @@
                 </td>
                 <td><select data-ng-model="step.selectedRegion" data-ng-change="updateStepRegion(step)" class="form-control" data-ng-options="region.displayName for region in regions"></select></td>
                 <td><select data-ng-model="step.type" id="step-type-{{$index}}" data-ng-options="stepType.name as stepType.displayedName for stepType in stepTypes" data-ng-required class="form-control"></select></td>
-                <td><input type="checkbox" id="step-emphasized-{{$index}}" name="step-emphasized-{{$index}}" data-ng-model="step.emphasized"></td>
                 <td>
-                    <select data-ng-model="step.value_specific" id="step-value-specific-{{$index}}" data-ng-options="valueSpecificOption.name as valueSpecificOption.displayName for valueSpecificOption in valueSpecificOptions" data-ng-required class="form-control"></select>
-                    <select data-ng-model="step.value_generic" id="step-value-specific-{{$index}}" data-ng-options="valueGenericOption.name as valueGenericOption.displayName for valueGenericOption in valueGenericOptions" data-ng-required class="form-control"></select></td>
+                    <div class="btn-group" data-dropdown data-is-open="stepOptionsDropdownStatus$index.isopen">
+                        <button type="button" class="btn btn-warning" data-dropdown-toggle>Options <span class="caret"></span></button>
+                        <ul class="dropdown-menu dropdown-menu-custom" role="menu">
+                            <li ng-click="$event.stopPropagation();"><label class="checkbox-inline"><input type="checkbox" ng-click="toggleEmphasizeStep(step);"> Emphasized?</label></li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="btn-group btn-group-xs" role="group">
+                                    <button type="button" class="btn btn-default" data-ng-repeat="valueGenericOption in valueGenericOptions">{{ valueGenericOption.displayName }}</button>
+                                </div>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="btn-group btn-group-xs" role="group">
+                                    <button type="button" class="btn btn-default" data-ng-repeat="valueSpecificOption in valueSpecificOptions">{{ valueSpecificOption.displayName }}</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- <select data-ng-model="step.value_specific" id="step-value-specific-{{\$index}}" data-ng-options="valueSpecificOption.name as valueSpecificOption.displayName for valueSpecificOption in valueSpecificOptions" data-ng-required class="form-control"></select>
+                    <select data-ng-model="step.value_generic" id="step-value-specific-{{\$index}}" data-ng-options="valueGenericOption.name as valueGenericOption.displayName for valueGenericOption in valueGenericOptions" data-ng-required class="form-control"></select>
+                     -->
+                </td>
                 <td>
-                    <select multiple data-ng-model="step.predecessors" id="step-predecessors-{{$index}}" class="form-control"><option data-ng-repeat="predecessor in diagram.steps" value="predecessor.id">{{predecessor.title}}</option></select>
+                     <select multiple data-ng-model="step.predecessors" id="step-predecessors-{{$index}}" class="form-control"><option data-ng-repeat="predecessor in diagram.steps" value="predecessor.id">{{predecessor.title}}</option></select>
                 </td>
                 <td><button type="button" class="btn btn-danger" data-ng-click="deleteStep($index)">&#10006</button></td>
             </tr>

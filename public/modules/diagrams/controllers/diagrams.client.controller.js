@@ -87,6 +87,10 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             $scope.lastSelectedDomain = domain;
         };
 
+        $scope.toggleEmphasizeStep = function (step) {
+            step.emphasized = !step.emphasized
+        }
+
         // Create new Diagram
         $scope.create = function () {
             // Create new Diagram object
