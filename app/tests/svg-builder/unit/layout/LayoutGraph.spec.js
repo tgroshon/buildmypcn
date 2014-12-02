@@ -3,7 +3,6 @@
 
 var should = require('should');
 var spyquire = require('spyquire');
-var pcnFixture = require('../../../../fixtures/pcn.json');
 var LayoutNode = require('../../../../lib/svg-builder/layout/LayoutNode');
 var constants = require('../../../../lib/svg-builder/constants');
 

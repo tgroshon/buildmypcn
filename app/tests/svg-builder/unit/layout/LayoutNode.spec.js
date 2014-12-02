@@ -1,7 +1,6 @@
 'use strict';
 
 var should = require('should');
-var pcnFixture = require('../../../../fixtures/pcn.json');
 var constants = require('../../../../lib/svg-builder/constants');
 var LayoutNode = require('../../../../lib/svg-builder/layout/LayoutNode');
 
