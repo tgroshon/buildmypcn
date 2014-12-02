@@ -32,8 +32,26 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             {'name': 'loose_temporal_relationship', 'displayName': 'Loose Temporal'}
         ];
 
-        $scope.valueSpecificOptions = [-3, -2, -1, 0, 1, 2, 3];
-        $scope.valueGenericOptions = [-3, -2, -1, 0, 1, 2, 3];
+        // Smiley face unicode HTML entity: \u263a
+        // Frowny face unicode HTML entity: \u2639
+        $scope.valueSpecificOptions = [
+            {'name': '3', 'displayName': '\u263a\u263a\u263a'},
+            {'name': '2', 'displayName': '\u263a\u263a'},
+            {'name': '1', 'displayName': '\u263a'},
+            {'name': '0', 'displayName': 'O'},
+            {'name': '-1', 'displayName': '\u2639'},
+            {'name': '-2', 'displayName': '\u2639\u2639'},
+            {'name': '-3', 'displayName': '\u2639\u2639\u2639'},
+        ];
+        $scope.valueGenericOptions = [
+            {'name': '3', 'displayName': '$$$'},
+            {'name': '2', 'displayName': '$$'},
+            {'name': '1', 'displayName': '$'},
+            {'name': '0', 'displayName': 'O'},
+            {'name': '-1', 'displayName': '-$'},
+            {'name': '-2', 'displayName': '-$$'},
+            {'name': '-3', 'displayName': '-$$$'},
+        ];
 
         // Create a new, blank PCN object
         $scope.diagram = PCN.initPCN('', '', '');
