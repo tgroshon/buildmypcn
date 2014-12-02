@@ -1,36 +1,92 @@
-<section data-ng-controller="HomeController">
-	<div class="jumbotron text-center">
+<section data-ng-controller="HomeController" data-ng-init="find()">
+	<div class="jumbotron text-center" data-ng-hide="authentication.user">
 		<div class="row">
 			<p class="lead">
-        <strong>buildmypcn</strong> is running MEAN!<br/>
-        Open-Source Full-Stack Solution For <a href="http://meanjs.org" target="_blank">MEAN Applications</a>.
+				<h2>Welcome to Build My PCN!</h2>
+				<br/>
+				Please <a href="/#!/signin">Sign In</a> to begin
 			</p>
 		</div>
 	</div>
-	<div class="well">
+	<div class="well" data-ng-hide="authentication.user">
 		<h2>Documentation</h2>
 		<p>
-      The following are some helpful links for developement in our project:
+			The following are some helpful links for extending this project in the future:
 			<ul>
-        <li>
-          <a target="_blank" href="http://services.byu.edu/pcn/pcn-wizard-0_4.html">Sampson PCN</a>
-        </li>
-        <li>
-          <a target="_blank" href="https://gist.github.com/tgroshon/522063792f6daa32f668">Sampson Layout Algorithm</a>
-        </li>
-        <li>
-          <a target="_blank" href="http://expressjs.com/">Express</a>
-        </li>
-        <li>
-          <a target="_blank" href="http://www.airpair.com/angularjs?ti=#MxkrVCfYlQfeQLBy.99">Angular Tutorial</a>
-        </li>
-        <li>
-          <a target="_blank" href="http://getbootstrap.com/">Bootstrap</a>
-        </li>
-        <li>
-          <a target="_blank" href="http://meanjs.org/docs.html">MEAN.JS Documentation</a>
+				<li>
+					<a target="_blank" href="http://services.byu.edu/pcn/pcn-wizard-0_4.html">Sampson PCN</a>
+				</li>
+				<li>
+					<a target="_blank" href="https://gist.github.com/tgroshon/522063792f6daa32f668">Sampson Layout Algorithm</a>
+				</li>
+				<li>
+					<a target="_blank" href="http://expressjs.com/">Express</a>
+				</li>
+				<li>
+					<a target="_blank" href="http://www.airpair.com/angularjs?ti=#MxkrVCfYlQfeQLBy.99">Angular Tutorial</a>
+				</li>
+				<li>
+					<a target="_blank" href="http://getbootstrap.com/">Bootstrap</a>
+				</li>
+				<li>
+					<a target="_blank" href="http://meanjs.org/docs.html">MEAN.JS Documentation</a>
 				</li>
 			</ul>
 		</p>
+	</div>
+	<div class="well container row" style="margin-top:20px; padding-top:0px"  data-ng-show="authentication.user" >
+		<h2 style="margin-bottom:30px;">Welcome, {{authentication.user.displayName}}</h2>
+		<div class="col-md-6 col-sm-12">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					Diagrams
+				</div>
+				<div class="panel-body">
+					<a data-ng-repeat="diagram in diagrams" data-ng-href="#!/diagrams/{{diagram._id}}" class="list-group-item"> <small class="list-group-item-text"> <span data-ng-bind="diagram.created | date:'short'"></span> - <span data-ng-bind="diagram.metadata.author"></span> </small> <h4 class="list-group-item-heading" data-ng-bind="diagram.metadata.title"></h4> </a>
+					<div class="alert alert-warning text-center" data-ng-hide="!diagrams.$resolved || diagrams.length">
+						No Active Diagrams
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 col-sm-12">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					Links
+				</div>
+				<div class="panel-body">
+					<div class="btn-group-vertical" role="group" >
+						<button type="button" href="/#!/diagrams/create" class="btn btn-success">
+							New Diagram
+						</button>
+						<button type="button" href="/#!/groups/create" class="btn btn-success">
+							New Group
+						</button>
+						<button type="button" href="http://services.byu.edu/pcn/pcn-wizard-0_4.html" class="btn btn-info">
+							Original PCN Wizard
+						</button>
+						<button type="button" href="http://services.byu.edu/wp/" class="btn btn-info">
+							Service Design Classes &amp; Innovation
+						</button>
+						<button type="button" href="https://www.youtube.com/user/drsamps" class="btn btn-info">
+							Dr. Sampson's YouTube Channel
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 col-sm-12">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					Groups
+				</div>
+				<div class="panel-body">
+					<a data-ng-repeat="group in groups" data-ng-href="#!/groups/{{group._id}}" class="list-group-item" ng-sort="group.created"> <small><span data-ng-bind="group.created | date:'short'"></span> - <span data-ng-bind="group.user.displayName"></span> </small> <h4 class="list-group-item-heading" data-ng-bind="group.name"></h4> </a>
+					<div class="alert alert-warning text-center" data-ng-hide="!groups.$resolved || groups.length">
+						No Active Groups
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </section>

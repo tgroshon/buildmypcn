@@ -3,7 +3,7 @@
         <h1>Groups</h1>
     </div>
     <div class="list-group">
-      <a data-ng-repeat="group in groups" data-ng-href="#!/groups/{{group._id}}" class="list-group-item">
+      <a data-ng-repeat="group in groups" data-ng-href="#!/groups/{{group._id}}" class="list-group-item" ng-sort="group.created">
 			<small class="list-group-item-text">
 			  Created on	
 				<span data-ng-bind="group.created | date:'medium'"></span>

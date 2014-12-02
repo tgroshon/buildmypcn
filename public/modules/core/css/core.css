@@ -13,3 +13,9 @@
 .ng-valid.ng-dirty{
     border-color:#78FA89;
 }
+.panel{
+	padding-left:0px;
+	padding-right:0px;
+	margin-left:0px;
+	margin-right:0px;
+}
