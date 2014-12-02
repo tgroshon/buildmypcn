@@ -56,7 +56,7 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
         // Create a new, blank PCN object
         $scope.diagram = PCN.initPCN('', '', '');
         $scope.diagram.domains = [PCN.initDomain('', 'Provider'), PCN.initDomain('', 'Customer')];
-        $scope.diagram.steps = [PCN.initStep($scope.diagram.domains[1], '', '', null)];
+        $scope.diagram.steps = [PCN.initStep($scope.diagram.domains[1], '', $scope.regions[0].name, null)];
 
         $scope.lastSelectedDomain = $scope.diagram.domains[1];
 
@@ -65,7 +65,7 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
         };
 
         $scope.addStep = function () {
-            $scope.diagram.steps.push(PCN.initStep($scope.lastSelectedDomain, '', '', null));
+            $scope.diagram.steps.push(PCN.initStep($scope.lastSelectedDomain, '', $scope.regions[0].name, null));
         };
 
         $scope.deleteStep = function (index) {
@@ -151,12 +151,15 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             }
         }
 
+        // Updates each step with the appropriate region with_domain
         $scope.updateStepRegions = function () {
-            // TODO BUG this doesn't work right on update of diagram
             for (var i = 0; i < $scope.diagram.steps.length; i++) {
                 var step = $scope.diagram.steps[i];
-                var name = step.selectedRegion.name;
-                step.domain.region = { type: name, with_domain: $scope.diagram.domains[0].id === step.domain.id ? $scope.diagram.domains[1].id : $scope.diagram.domains[0].id };
+                var stepType = step.domain.region.type;
+                var owner = $scope.getDomainFromId(step.domain.id);
+                var relatedID = (owner.id === $scope.diagram.domains[0].id) ? $scope.diagram.domains[1].id : $scope.diagram.domains[0].id;
+                var related = $scope.getDomainFromId(relatedID);
+                step.domain = PCN.initStepDomain(owner, stepType, related);
             }
         };
 
@@ -176,29 +179,10 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
                 $scope.diagram = diagram;
                 $scope.selectedGroup = null;
 
-                var i;
-
-                for (i = 0; i < $scope.groups.length; i++) {
+                for (var i = 0; i < $scope.groups.length; i++) {
                     if ($scope.groups[i]._id === $scope.diagram.group._id) {
                         $scope.selectedGroup = $scope.groups[i];
                         break;
-                    }
-                }
-
-                for (i = 0; i < $scope.diagram.steps.length; i++) {
-                    var step = $scope.diagram.steps[i];
-                    for (var j = 0; j < $scope.diagram.domains.length; j++) {
-                        if (step.domain.id === $scope.diagram.domains[j].id) {
-                            step.domain = $scope.diagram.domains[j];
-                            break;
-                        }
-                    }
-
-                    for (j = 0; j < $scope.regions.length; j++) {
-                        if (step.domain.region.type === $scope.regions[j].name) {
-                            step.selectedRegion = $scope.regions[j];
-                            break;
-                        }
                     }
                 }
             });
