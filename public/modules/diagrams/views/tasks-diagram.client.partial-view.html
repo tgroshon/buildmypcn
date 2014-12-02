@@ -82,7 +82,7 @@
                 </td>
                 <td><select data-ng-model="step.selectedRegion" data-ng-change="updateStepRegions()" class="form-control" data-ng-options="region.displayName for region in regions"></select></td>
                 <td><select data-ng-model="step.type" id="step-type-{{$index}}" data-ng-options="stepType.name as stepType.displayedName for stepType in stepTypes" data-ng-required class="form-control"></select></td>
-                <td>
+                <td>{{ step }}
                     <div class="btn-group" data-dropdown data-is-open="stepOptionsDropdownStatus$index.isopen">
                         <button type="button" class="btn btn-warning" data-dropdown-toggle>Options <span class="caret"></span></button>
                         <ul class="dropdown-menu dropdown-menu-custom" role="menu">
@@ -90,13 +90,13 @@
                             <li class="divider"></li>
                             <li ng-click="$event.stopPropagation();">
                                 <div class="btn-group btn-group-xs" role="group">
-                                    <button type="button" class="btn btn-default" data-ng-repeat="valueGenericOption in valueGenericOptions">{{ valueGenericOption.displayName }}</button>
+                                    <button type="button" class="btn btn-default" data-ng-repeat="valueGenericOption in valueGenericOptions" ng-click="setValueGeneric(step, valueGenericOption.name)">{{ valueGenericOption.displayName }}</button>
                                 </div>
                             </li>
                             <li class="divider"></li>
                             <li ng-click="$event.stopPropagation();">
                                 <div class="btn-group btn-group-xs" role="group">
-                                    <button type="button" class="btn btn-default" data-ng-repeat="valueSpecificOption in valueSpecificOptions">{{ valueSpecificOption.displayName }}</button>
+                                    <button type="button" class="btn btn-default" data-ng-repeat="valueSpecificOption in valueSpecificOptions" ng-click="setValueSpecific(step, valueSpecificOption.name)">{{ valueSpecificOption.displayName }}</button>
                                 </div>
                             </li>
                         </ul>

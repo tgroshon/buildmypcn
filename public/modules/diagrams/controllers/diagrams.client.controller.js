@@ -160,6 +160,14 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             }
         };
 
+        $scope.setValueGeneric = function(step, option) {
+            step.value_generic = option;
+        };
+
+        $scope.setValueSpecific = function(step, option) {
+            step.value_specific = option;
+        };
+
         // Find a list of Diagrams
         $scope.find = function () {
             $scope.diagrams = Diagrams.query();
