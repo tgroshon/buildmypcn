@@ -231,6 +231,6 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
                 stepPredecessors[step.id] = stepObject;
             }
             return stepPredecessors;
-        };
+        }
     }
 ]);
