@@ -3,11 +3,15 @@
 
 # TEAM
 
-    <name> -- <role> -- <twitter>
+    Tommy Groshong
+    Brent Anderson
+    Sean Fisher
+    Ryan Craig
+    Garett Breen
 
 # THANKS
 
-    <name>
+    Dr. Sampson at Brigham Young University
 
 # TECHNOLOGY COLOPHON
 

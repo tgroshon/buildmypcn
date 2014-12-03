@@ -9,9 +9,13 @@ var Diagram = mongoose.model('Diagram');
 var Group = mongoose.model('Group');
 var _ = require('lodash');
 var chartBuilder = require('pcnchart');
+var pdf = require('html-pdf');
 
+function formatDiagramTitle(diagram) {
+  return diagram.metadata.title ? diagram.metadata.title.replace(/ /g, '_') : 'diagram';
+}
 /**
- *
+ * Server-side Diagram-to-SVG render
  */
 exports.graph = function(req, res) {
   var diagram = req.diagram;
@@ -20,6 +24,17 @@ exports.graph = function(req, res) {
     'X-Frame-Options': 'SAMEORIGIN'
   });
   res.send(chartBuilder(diagram));
+};
+
+/**
+ * Download Diagram Data
+ */
+exports.download = function(req, res) {
+  var title = formatDiagramTitle(req.diagram);
+  res.set({
+    'Content-disposition': 'attachment; filename=' + title + '.json'
+  });
+  res.send(req.diagram.toJSON());
 };
 
 /**
@@ -123,9 +138,29 @@ exports.hasAuthorization = function(req, res, next) {
   var userIsGroupMember = req.diagram.group.members.some(function (member) {
     return req.user._id.equals(member._id);
   });
-  
+
   if (userIsGroupOwner || userIsGroupMember)
     return next();
   else
     return res.status(403).send('User Not Authorized via Group for this diagram');
+};
+
+/**
+ * Generate PDF for a given resource
+ */
+exports.generatePdf = function(req, res, next) {
+	var diagram = req.diagram;
+  var title = formatDiagramTitle(req.diagram);
+
+	pdf.create(chartBuilder(diagram), function(err, buffer) {
+		if (err) {
+			return res.status(500).send('Error rendering PDF of diagram');
+		}
+
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-disposition': 'attachment; filename=' + title + '.pdf'
+    });
+    res.send(buffer);
+	});
 };

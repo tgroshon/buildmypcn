@@ -18,8 +18,27 @@
 .dropdown-menu-custom {
     padding: 10px 10px;
     min-width: 286px;
+    margin-bottom: 30px;
+}
+
+.dropdown-menu-scrollable {
+    max-height: 200px;
+    overflow: auto;
 }
 
 .dropdown-menu-custom .btn-group .btn {
     min-width: 38px;
+}
+
+.row.step-row {
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.pcn-grapher-directive {
+  border: 2px solid #cdcdcd;
+  border-radius: 5px;
+  box-shadow: 4px -1px 10px #888888;
+  margin: 20px;
+  padding: 3px;
 }

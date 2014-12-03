@@ -28,8 +28,8 @@ angular.module('diagrams').factory('PCN', ['uuid',
         };
       },
 
-      initStep: function (domain, title, type, relatedDomain) {
-        // type = 'independent' | 'surrogate' | 'direct'
+      initStep: function (domain, title, regionType, relatedDomain) {
+        // regionType = 'independent' | 'surrogate' | 'direct'
         if (!domain) throw new Error('Bad caller: required domain');
 
         var step = {
@@ -43,7 +43,7 @@ angular.module('diagrams').factory('PCN', ['uuid',
           'domain': {
             'id': domain.id,
             'region': {
-              'type': type,
+              'type': regionType,
             },
           },
           'problems': []
@@ -59,7 +59,7 @@ angular.module('diagrams').factory('PCN', ['uuid',
         return {
           'id': id,
           'type': type,
-          'title': title 
+          'title': title
         };
       },
 
@@ -71,7 +71,7 @@ angular.module('diagrams').factory('PCN', ['uuid',
           id: owner.id,
           region: {
             type: type,
-            'with_domain': related.id 
+            'with_domain': related.id
           }
         };
       },

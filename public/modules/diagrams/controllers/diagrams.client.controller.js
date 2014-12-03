@@ -56,16 +56,22 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
         // Create a new, blank PCN object
         $scope.diagram = PCN.initPCN('', '', '');
         $scope.diagram.domains = [PCN.initDomain('', 'Provider'), PCN.initDomain('', 'Customer')];
-        $scope.diagram.steps = [PCN.initStep($scope.diagram.domains[1], '', '', null)];
+        $scope.diagram.steps = [PCN.initStep($scope.diagram.domains[1], '', $scope.regions[0].name, null)];
 
         $scope.lastSelectedDomain = $scope.diagram.domains[1];
+        $scope.stepPredecessors = {};
 
         $scope.addDomain = function () {
             $scope.diagram.domains.push(PCN.initDomain('', ''));
         };
 
         $scope.addStep = function () {
-            $scope.diagram.steps.push(PCN.initStep($scope.lastSelectedDomain, '', '', null));
+            var steps = $scope.diagram.steps;
+            var lastStep = steps[steps.length - 1];
+            var newStep = PCN.initStep($scope.lastSelectedDomain, '', $scope.regions[0].name, null);
+            newStep.predecessors.push(PCN.initPredecessor(lastStep.id, $scope.predecessorTypes[0].name, ''));
+            steps.push(newStep);
+            $scope.stepPredecessors = getStepPredecessorsFromDiagram($scope.diagram);
         };
 
         $scope.deleteStep = function (index) {
@@ -132,8 +138,6 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
         $scope.update = function () {
             var diagram = $scope.diagram;
 
-            setPredecessors(diagram);
-
             diagram.group = $scope.selectedGroup;
 
             diagram.$update(function () {
@@ -143,20 +147,46 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             });
         };
 
-        function setPredecessors(diagram) {
-            for (var i = 1; i < $scope.diagram.steps.length; i++) {
-                var step = $scope.diagram.steps[i];
-                var previousStep = $scope.diagram.steps[i - 1];
-                step.predecessors = [PCN.initPredecessor(previousStep.id, $scope.predecessorTypes[0].displayName, previousStep.title)];
+        $scope.updatePredecessors = function() {
+            for (var j = 0; j < $scope.diagram.steps.length; j++) {
+                var step = $scope.diagram.steps[j];
+                if (typeof $scope.stepPredecessors[step.id] === 'object') {
+                    step.predecessors = [];
+                    var numPredecessors = Object.keys($scope.stepPredecessors[step.id]).length;
+                    for (var i = 0; i < numPredecessors; i++) {
+                        var predecessorId = Object.keys($scope.stepPredecessors[step.id])[i];
+                        if (!!$scope.stepPredecessors[step.id][predecessorId]) {
+                            step.predecessors.push(PCN.initPredecessor(predecessorId, $scope.predecessorTypes[0].name, ''));
+                        }
+                    }
+                }
             }
-        }
+        };
 
+        $scope.deleteAllPredecessorsForStep = function(step) {
+            step.predecessors = [];
+            delete $scope.stepPredecessors[step.id];
+        };
+
+        $scope.allStepsExceptMe = function(step) {
+            var steps = [];
+            for (var i = 0; i < $scope.diagram.steps.length; i++) {
+                if ($scope.diagram.steps[i].id !== step.id) {
+                    steps.push($scope.diagram.steps[i]);
+                }
+            }
+            return steps;
+        };
+
+        // Updates each step with the appropriate region with_domain
         $scope.updateStepRegions = function () {
-            // TODO BUG this doesn't work right on update of diagram
             for (var i = 0; i < $scope.diagram.steps.length; i++) {
                 var step = $scope.diagram.steps[i];
-                var name = step.selectedRegion.name;
-                step.domain.region = { type: name, with_domain: $scope.diagram.domains[0].id === step.domain.id ? $scope.diagram.domains[1].id : $scope.diagram.domains[0].id };
+                var stepType = step.domain.region.type;
+                var owner = $scope.getDomainFromId(step.domain.id);
+                var relatedID = (owner.id === $scope.diagram.domains[0].id) ? $scope.diagram.domains[1].id : $scope.diagram.domains[0].id;
+                var related = $scope.getDomainFromId(relatedID);
+                step.domain = PCN.initStepDomain(owner, stepType, related);
             }
         };
 
@@ -175,33 +205,32 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             promise.$promise.then(function (diagram) {
                 $scope.diagram = diagram;
                 $scope.selectedGroup = null;
+                $scope.stepPredecessors = {};
+                $scope.lastSelectedDomain = $scope.diagram.domains[1];
 
-                var i;
-
-                for (i = 0; i < $scope.groups.length; i++) {
+                for (var i = 0; i < $scope.groups.length; i++) {
                     if ($scope.groups[i]._id === $scope.diagram.group._id) {
                         $scope.selectedGroup = $scope.groups[i];
                         break;
                     }
                 }
 
-                for (i = 0; i < $scope.diagram.steps.length; i++) {
-                    var step = $scope.diagram.steps[i];
-                    for (var j = 0; j < $scope.diagram.domains.length; j++) {
-                        if (step.domain.id === $scope.diagram.domains[j].id) {
-                            step.domain = $scope.diagram.domains[j];
-                            break;
-                        }
-                    }
-
-                    for (j = 0; j < $scope.regions.length; j++) {
-                        if (step.domain.region.type === $scope.regions[j].name) {
-                            step.selectedRegion = $scope.regions[j];
-                            break;
-                        }
-                    }
-                }
+                $scope.stepPredecessors = getStepPredecessorsFromDiagram($scope.diagram);
             });
         };
+
+        function getStepPredecessorsFromDiagram (diagram) {
+            var stepPredecessors = {};
+            for (var i = 0; i < diagram.steps.length; i++) {
+                var step = diagram.steps[i];
+                var stepObject = {};
+                for (var j = 0; j < step.predecessors.length; j++) {
+                    var predecessor = step.predecessors[j];
+                    stepObject[predecessor.id] = true;
+                }
+                stepPredecessors[step.id] = stepObject;
+            }
+            return stepPredecessors;
+        }
     }
 ]);

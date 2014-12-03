@@ -4,12 +4,18 @@
 	</div>
 
 	<div class="pull-right">
-		<a class="btn btn-primary" href="/#!/diagrams/{{diagram._id}}/edit">
+		<a title="Edit diagram" class="btn btn-primary" href="/#!/diagrams/{{diagram._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>
-		<a class="btn btn-primary" data-ng-click="remove();">
-			<i class="glyphicon glyphicon-trash"></i>
+		<a title="Download PDF of Diagram" class="btn btn-primary" href="/diagrams/{{diagram._id}}/pdf">
+			<i class="glyphicon glyphicon-picture"></i>
 		</a>
+		<a title="Download Diagram Data as File" class="btn btn-primary" href="/diagrams/{{diagram._id}}/download">
+			<i class="glyphicon glyphicon-download"></i>
+		</a>
+        <a title="Delete diagram" class="btn btn-danger" data-ng-click="remove();">
+            <i class="glyphicon glyphicon-trash"></i>
+        </a>
 	</div>
 
 	<small>
@@ -21,5 +27,5 @@
 		</em>
 	</small>
 
-  <pcn-grapher pcn="diagram"></pcn-grapher>
+  <pcn-grapher diagram-id="{{diagram._id}}"></pcn-grapher>
 </section>

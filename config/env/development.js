@@ -3,7 +3,7 @@
 module.exports = {
 	db: 'mongodb://localhost/buildmypcn-dev',
 	app: {
-		title: 'buildmypcn - Development Environment'
+		title: 'Build My PCN - Development Environment'
 	},
 	facebook: {
 		clientID: process.env.FACEBOOK_ID || 'APP_ID',

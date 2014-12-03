@@ -20,7 +20,6 @@ var DiagramSchema = new Schema({
         description: {
             type: String,
             default: '',
-            required: 'Please give the diagram a description',
             trim: true
         },
         author: {

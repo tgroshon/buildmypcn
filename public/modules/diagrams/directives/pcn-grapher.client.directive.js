@@ -7,9 +7,16 @@ angular.module('diagrams').directive('pcnGrapher', [
     return {
       restrict: 'E',
       replace: true,
-      template: '<object data="/diagrams/{{diagram._id}}/graph" type="image/svg+xml"></object>',
+      template: '<div></div>',
       scope: {
-        diagram: '=pcn'
+        diagramId: '@'
+      },
+      link: function(scope, element, attrs) {
+        attrs.$observe('diagramId', function(value){
+          if (value) {
+            element.html('<object class="pcn-grapher-directive" data="/diagrams/' + value + '/graph" type="image/svg+xml"></object>');
+          }
+        });
       }
     };
   }
