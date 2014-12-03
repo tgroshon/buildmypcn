@@ -12,7 +12,7 @@ var chartBuilder = require('pcnchart');
 var pdf = require('html-pdf');
 
 function formatDiagramTitle(diagram) {
-  return diagram.metadata.title ? diagram.metadata.title.replace(/ /g, '_') : 'diagram'
+  return diagram.metadata.title ? diagram.metadata.title.replace(/ /g, '_') : 'diagram';
 }
 /**
  * Server-side Diagram-to-SVG render
@@ -138,7 +138,7 @@ exports.hasAuthorization = function(req, res, next) {
   var userIsGroupMember = req.diagram.group.members.some(function (member) {
     return req.user._id.equals(member._id);
   });
-  
+
   if (userIsGroupOwner || userIsGroupMember)
     return next();
   else

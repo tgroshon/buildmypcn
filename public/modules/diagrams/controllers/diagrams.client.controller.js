@@ -151,17 +151,17 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
                     for (var i = 0; i < numPredecessors; i++) {
                         var predecessorId = Object.keys($scope.stepPredecessors[step.id])[i];
                         if (!$scope.stepPredecessors[step.id][predecessorId] === false) {
-                            step.predecessors.push(PCN.initPredecessor(predecessorId, $scope.predecessorTypes[0].name, ''))
+                            step.predecessors.push(PCN.initPredecessor(predecessorId, $scope.predecessorTypes[0].name, ''));
                         }
                     }
                 }
             }
-        }
+        };
 
         $scope.deleteAllPredecessorsForStep = function(step) {
             step.predecessors = [];
             delete $scope.stepPredecessors[step.id];
-        }
+        };
 
         $scope.allStepsExceptMe = function(step) {
             var steps = [];
@@ -209,7 +209,7 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
                     }
                 }
 
-                for (i = 0; i < $scope.diagram.steps.length; i++) {;
+                for (i = 0; i < $scope.diagram.steps.length; i++) {
                     var step = $scope.diagram.steps[i];
                     var stepObject = {};
                     step.message = step.predecessors.length;
