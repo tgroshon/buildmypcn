@@ -150,7 +150,7 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
                     var numPredecessors = Object.keys($scope.stepPredecessors[step.id]).length;
                     for (var i = 0; i < numPredecessors; i++) {
                         var predecessorId = Object.keys($scope.stepPredecessors[step.id])[i];
-                        if (!$scope.stepPredecessors[step.id][predecessorId] === false) {
+                        if (!!$scope.stepPredecessors[step.id][predecessorId]) {
                             step.predecessors.push(PCN.initPredecessor(predecessorId, $scope.predecessorTypes[0].name, ''));
                         }
                     }
