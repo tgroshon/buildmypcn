@@ -1,12 +1,13 @@
 {
   "name": "buildmypcn",
   "description": "PCN Diagram Builder web app",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "author": "tgroshon",
   "engines": {
     "node": "0.10.x",
     "npm": "1.4.x"
   },
+  "repository": "git@github.com:tgroshon/buildmypcn.git",
   "scripts": {
     "start": "grunt",
     "test": "grunt test",
