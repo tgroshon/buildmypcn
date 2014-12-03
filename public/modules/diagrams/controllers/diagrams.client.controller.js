@@ -66,7 +66,12 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
         };
 
         $scope.addStep = function () {
-            $scope.diagram.steps.push(PCN.initStep($scope.lastSelectedDomain, '', $scope.regions[0].name, null));
+            var steps = $scope.diagram.steps;
+            var lastStep = steps[steps.length - 1];
+            var newStep = PCN.initStep($scope.lastSelectedDomain, '', $scope.regions[0].name, null);
+            newStep.predecessors.push(PCN.initPredecessor(lastStep.id, $scope.predecessorTypes[0].name, ''));
+            steps.push(newStep);
+            $scope.stepPredecessors = getStepPredecessorsFromDiagram($scope.diagram);
         };
 
         $scope.deleteStep = function (index) {
@@ -210,17 +215,22 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
                     }
                 }
 
-                for (i = 0; i < $scope.diagram.steps.length; i++) {
-                    var step = $scope.diagram.steps[i];
-                    var stepObject = {};
-                    step.message = step.predecessors.length;
-                    for (var j = 0; j < step.predecessors.length; j++) {
-                        var predecessor = step.predecessors[j];
-                        stepObject[predecessor.id] = true;
-                    }
-                    $scope.stepPredecessors[step.id] = stepObject;
-                }
+                $scope.stepPredecessors = getStepPredecessorsFromDiagram($scope.diagram);
             });
+        };
+
+        function getStepPredecessorsFromDiagram (diagram) {
+            var stepPredecessors = {};
+            for (var i = 0; i < diagram.steps.length; i++) {
+                var step = diagram.steps[i];
+                var stepObject = {};
+                for (var j = 0; j < step.predecessors.length; j++) {
+                    var predecessor = step.predecessors[j];
+                    stepObject[predecessor.id] = true;
+                }
+                stepPredecessors[step.id] = stepObject;
+            }
+            return stepPredecessors;
         };
     }
 ]);
