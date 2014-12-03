@@ -54,18 +54,18 @@
     </fieldset>
     <fieldset>
         <legend>Steps</legend>
-        <div class="row">
-            <div class="col-md-1 col-xs-6">Step</div>
-            <div class="col-md-4 col-xs-6">Title</div>
-            <div class="col-md-2 col-xs-6">Region</div>
-            <div class="col-md-3 col-xs-6">Predecessors</div>
-            <div class="col-md-2 col-xs-6">Options</div>
+        <div class="row hidden-xs visible-md-block">
+            <div class="col-md-1">Step</div>
+            <div class="col-md-4">Title</div>
+            <div class="col-md-2">Region</div>
+            <div class="col-md-3">Predecessors</div>
+            <div class="col-md-2">Options</div>
         </div>
         <div class="row step-row" data-ng-repeat="step in diagram.steps">
-            <div class="col-md-1 col-xs-6">
+            <div class="col-xs-1">
                 <p class="form-control-static"><span class="badge">{{$index + 1}}</span></p>
             </div>
-            <div class="col-md-4 col-xs-6">
+            <div class="col-md-4 col-xs-11">
                 <div class="input-group">
                     <div class="input-group-btn" data-dropdown data-is-open="domainDropdownStatus$index.isopen">
                         <button type="button" class="btn btn-default" data-dropdown-toggle>
@@ -79,10 +79,10 @@
                     <input type="text" class="form-control" id="step-title-{{$index}}" name="step-title-{{$index}}" data-ng-model="step.title" placeholder="needs pizza" required>
                 </div>
             </div>
-            <div class="col-md-2 col-xs-6">
+            <div class="col-md-2 col-md-offset-0 col-xs-5 col-xs-offset-2">
                 <select data-ng-model="step.domain.region.type" data-ng-change="updateStepRegions()" class="form-control" data-ng-options="region.name as region.displayName for region in regions"></select>
             </div>
-            <div class="col-md-3 col-xs-6">
+            <div class="col-md-3 col-xs-5">
                 <!-- Predecessors dropdown -->
                 <div data-dropdown data-is-open="predecessorDropdownStatus$index.isopen">
                     <button type="button" class="btn btn-link" data-dropdown-toggle>
@@ -99,18 +99,18 @@
                 </div>
                  <!-- <select multiple data-ng-model="step.predecessors" id="step-predecessors-{{\$index}}" class="form-control"><option data-ng-repeat="predecessor in diagram.steps" value="predecessor.id">{{predecessor.title}}</option></select> -->
             </div>
-            <div class="col-md-2 col-xs-6">
+            <div class="col-md-2 col-md-offset-0 col-xs-3 col-xs-offset-2">
                 <!-- Options dropdown -->
                 <div data-dropdown data-is-open="stepOptionsDropdownStatus$index.isopen">
                     <button type="button" class="btn btn-warning" data-dropdown-toggle>Options <span class="caret"></span></button>
                     <ul class="dropdown-menu dropdown-menu-custom" role="menu">
                         <li data-ng-click="$event.stopPropagation();">
                             <div class="row">
-                                <div class="col-xs-9">
+                                <div class="col-xs-8">
                                     <label class="checkbox-inline"><input type="checkbox" ng-model="step.emphasized"> Emphasized?</label>
                                 </div>
-                                <div class="col-xs-3">
-                                    <button type="button" class="btn btn-danger" data-ng-click="deleteStep($index)">&#10006</button>
+                                <div class="col-xs-4">
+                                    <button type="button" class="btn btn-danger" data-ng-click="deleteStep($index)">Delete</button>
                                 </div>
                             </div>
                         </li>

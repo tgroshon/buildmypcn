@@ -201,6 +201,7 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
                 $scope.diagram = diagram;
                 $scope.selectedGroup = null;
                 $scope.stepPredecessors = {};
+                $scope.lastSelectedDomain = $scope.diagram.domains[1];
 
                 for (var i = 0; i < $scope.groups.length; i++) {
                     if ($scope.groups[i]._id === $scope.diagram.group._id) {
