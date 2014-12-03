@@ -67,11 +67,13 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
 
         $scope.addStep = function () {
             var steps = $scope.diagram.steps;
-            var lastStep = steps[steps.length - 1];
             var newStep = PCN.initStep($scope.lastSelectedDomain, '', $scope.regions[0].name, null);
-            newStep.predecessors.push(PCN.initPredecessor(lastStep.id, $scope.predecessorTypes[0].name, ''));
+            if (steps.length > 0) { // assign a predecessor if there is one available
+                var lastStep = steps[steps.length - 1];
+                newStep.predecessors.push(PCN.initPredecessor(lastStep.id, $scope.predecessorTypes[0].name, ''));
+                $scope.stepPredecessors = getStepPredecessorsFromDiagram($scope.diagram);
+            }
             steps.push(newStep);
-            $scope.stepPredecessors = getStepPredecessorsFromDiagram($scope.diagram);
         };
 
         $scope.deleteStep = function (index) {
