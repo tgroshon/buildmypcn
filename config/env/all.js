@@ -2,7 +2,7 @@
 
 module.exports = {
 	app: {
-		title: 'buildmypcn',
+		title: 'Build My PCN',
 		description: 'PCN Diagram Builder web app',
 		keywords: 'pcn,business,Express,AngularJS,Node.js'
 	},
