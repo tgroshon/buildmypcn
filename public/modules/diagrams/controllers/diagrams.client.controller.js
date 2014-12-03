@@ -22,9 +22,9 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
 
         $scope.regions = [
             {'name': 'independent', 'displayName': 'Independent'},
-            {'name': 'direct_leading', 'displayName': 'Direct Leading'},
+            {'name': 'surrogate', 'displayName': 'Surrogate'},
             {'name': 'direct_shared', 'displayName': 'Direct Shared'},
-            {'name': 'surrogate', 'displayName': 'Surrogate'}
+            {'name': 'direct_leading', 'displayName': 'Direct Leading'}
         ];
 
         $scope.predecessorTypes = [
