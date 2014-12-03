@@ -83,11 +83,25 @@
                 <select data-ng-model="step.domain.region.type" data-ng-change="updateStepRegions()" class="form-control" data-ng-options="region.name as region.displayName for region in regions"></select>
             </div>
             <div class="col-md-3 col-xs-6">
-                 <select multiple data-ng-model="step.predecessors" id="step-predecessors-{{$index}}" class="form-control"><option data-ng-repeat="predecessor in diagram.steps" value="predecessor.id">{{predecessor.title}}</option></select>
+                <!-- Predecessors dropdown -->
+                <div data-dropdown data-is-open="predecessorDropdownStatus$index.isopen">
+                    <button type="button" class="btn btn-link" data-dropdown-toggle>
+                        <ng-pluralize data-count="step.predecessors.length" data-when="{'0':'No predecessors','one':'1 predecessor','other':'{} predecessors'}"></ng-pluralize>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-custom dropdown-menu-scrollable" role="menu" data-ng-click="$event.stopPropagation()">
+                        <li>
+                            <div class="checkbox"><label class="input-group"><button type="button" class="btn btn-sm btn-default" ng-click="deleteAllPredecessorsForStep(step)">Clear predecessors</button></div>
+                        </li>
+                        <li>
+                            <div class="checkbox" data-ng-repeat="predecessor in allStepsExceptMe(step)"><label><input type="checkbox" data-ng-model="stepPredecessors[step.id][predecessor.id]" data-ng-change="updatePredecessors()"> {{ predecessor.title ? (getDomainFromId(predecessor.domain.id) | domainTitle) + " " + predecessor.title : "New step " }}</label></div>
+                        </li>
+                    </ul>
+                </div>
+                 <!-- <select multiple data-ng-model="step.predecessors" id="step-predecessors-{{\$index}}" class="form-control"><option data-ng-repeat="predecessor in diagram.steps" value="predecessor.id">{{predecessor.title}}</option></select> -->
             </div>
             <div class="col-md-2 col-xs-6">
                 <!-- Options dropdown -->
-                <div class="btn-group" data-dropdown data-is-open="stepOptionsDropdownStatus$index.isopen">
+                <div data-dropdown data-is-open="stepOptionsDropdownStatus$index.isopen">
                     <button type="button" class="btn btn-warning" data-dropdown-toggle>Options <span class="caret"></span></button>
                     <ul class="dropdown-menu dropdown-menu-custom" role="menu">
                         <li data-ng-click="$event.stopPropagation();">

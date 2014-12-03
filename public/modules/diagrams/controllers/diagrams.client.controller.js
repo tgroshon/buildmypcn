@@ -59,6 +59,7 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
         $scope.diagram.steps = [PCN.initStep($scope.diagram.domains[1], '', $scope.regions[0].name, null)];
 
         $scope.lastSelectedDomain = $scope.diagram.domains[1];
+        $scope.stepPredecessors = {};
 
         $scope.addDomain = function () {
             $scope.diagram.domains.push(PCN.initDomain('', ''));
@@ -132,8 +133,6 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
         $scope.update = function () {
             var diagram = $scope.diagram;
 
-            setPredecessors(diagram);
-
             diagram.group = $scope.selectedGroup;
 
             diagram.$update(function () {
@@ -143,13 +142,36 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             });
         };
 
-        function setPredecessors(diagram) {
-            for (var i = 1; i < $scope.diagram.steps.length; i++) {
-                var step = $scope.diagram.steps[i];
-                var previousStep = $scope.diagram.steps[i - 1];
-                step.predecessors = [PCN.initPredecessor(previousStep.id, $scope.predecessorTypes[0].name, previousStep.title)];
+        $scope.updatePredecessors = function() {
+            for (var j = 0; j < $scope.diagram.steps.length; j++) {
+                var step = $scope.diagram.steps[j];
+                if (typeof $scope.stepPredecessors[step.id] === 'object') {
+                    step.predecessors = [];
+                    var numPredecessors = Object.keys($scope.stepPredecessors[step.id]).length;
+                    for (var i = 0; i < numPredecessors; i++) {
+                        var predecessorId = Object.keys($scope.stepPredecessors[step.id])[i];
+                        if (!$scope.stepPredecessors[step.id][predecessorId] === false) {
+                            step.predecessors.push(PCN.initPredecessor(predecessorId, $scope.predecessorTypes[0].name, ''))
+                        }
+                    }
+                }
             }
         }
+
+        $scope.deleteAllPredecessorsForStep = function(step) {
+            step.predecessors = [];
+            delete $scope.stepPredecessors[step.id];
+        }
+
+        $scope.allStepsExceptMe = function(step) {
+            var steps = [];
+            for (var i = 0; i < $scope.diagram.steps.length; i++) {
+                if ($scope.diagram.steps[i].id !== step.id) {
+                    steps.push($scope.diagram.steps[i]);
+                }
+            }
+            return steps;
+        };
 
         // Updates each step with the appropriate region with_domain
         $scope.updateStepRegions = function () {
@@ -178,12 +200,24 @@ angular.module('diagrams').controller('DiagramsController', ['$scope', '$statePa
             promise.$promise.then(function (diagram) {
                 $scope.diagram = diagram;
                 $scope.selectedGroup = null;
+                $scope.stepPredecessors = {};
 
                 for (var i = 0; i < $scope.groups.length; i++) {
                     if ($scope.groups[i]._id === $scope.diagram.group._id) {
                         $scope.selectedGroup = $scope.groups[i];
                         break;
                     }
+                }
+
+                for (i = 0; i < $scope.diagram.steps.length; i++) {;
+                    var step = $scope.diagram.steps[i];
+                    var stepObject = {};
+                    step.message = step.predecessors.length;
+                    for (var j = 0; j < step.predecessors.length; j++) {
+                        var predecessor = step.predecessors[j];
+                        stepObject[predecessor.id] = true;
+                    }
+                    $scope.stepPredecessors[step.id] = stepObject;
                 }
             });
         };

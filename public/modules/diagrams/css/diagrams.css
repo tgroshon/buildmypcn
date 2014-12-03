@@ -21,6 +21,11 @@
     margin-bottom: 30px;
 }
 
+.dropdown-menu-scrollable {
+    max-height: 200px;
+    overflow: auto;
+}
+
 .dropdown-menu-custom .btn-group .btn {
     min-width: 38px;
 }
